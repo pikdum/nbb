@@ -66,6 +66,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 			video.appendTo("#parent");
 		}
+		$scope.$apply();
 	}
 
 	$(document).keydown(function(e) {

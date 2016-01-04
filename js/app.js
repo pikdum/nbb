@@ -20,6 +20,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}
 	}
 
+	$('#tag-input').focus();
+
 	$scope.queryAPI = function(api) {
 		$scope.index = -1;
 		$scope.loading = true;

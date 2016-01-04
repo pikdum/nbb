@@ -30,7 +30,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	$('#tag-input').focus();
 
+	$scope.newQuery = function(api) {
+		$scope.page = 1;
+		$scope.queryAPI(api);
+	}
+
 	$scope.queryAPI = function(api) {
+		$scope.api = api;
 		$scope.index = -1;
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
@@ -41,7 +47,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$http.get(url).
 			success(function(data) {
 				$scope.data = data;
+				$scope.data = $scope.data.filter(function(v) {
+					return v.file_url;
+				});
 				$scope.loading = false;
+				setTimeout(function() {
+					$("#preview_list").scrollTo(0, 100);
+				}, 100);
 			}).error(function() {
 				console.log("error");
 				$scope.loading = false;
@@ -60,7 +72,9 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$("#image").remove();
 		$("#video").remove();
 		var e = ".preview:eq(" + index + ")";
-		$("#preview_list").scrollTo(e);
+		setTimeout(function() {
+			$("#preview_list").scrollTo(e, 100);
+		}, 100);
 		if ($scope.IMAGE_TYPES.indexOf($scope.active.file_ext) >= 0) {
 			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
 			img.attr('src', $scope.base_url + $scope.active.file_url);
@@ -78,7 +92,21 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 
+	$scope.incPage = function(v) {
+		if ($scope.page == 1 && !v) {
+			return;
+		}
+		if (v) {
+			$scope.page = $scope.page + 1;
+		} else {
+			$scope.page = $scope.page = 1;
+		}
+		$scope.queryAPI($scope.api);
+	}
+
 	$(document).keydown(function(e) {
+		console.log("length: " + $scope.data.length);
+		console.log("indedx: " + $scope.index);
 		switch(e.which) {
 			case 38:
 				if ($scope.index > 0) {
@@ -87,11 +115,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				}
 				break;
 			case 40:
-				if (!$scope.index) {
-					$scope.index = 0;
-					$scope.setActive($scope.index);
-				}
-				if ($scope.index < 100) {
+				if ($scope.index < $scope.data.length - 1 &&
+						$scope.data.length > 0) {
 					$scope.index = $scope.index + 1;
 					$scope.setActive($scope.index);
 				}

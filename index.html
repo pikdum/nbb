@@ -15,7 +15,7 @@
 		<div class="col-xs-3 max-height col-lg-2">
 
 			<div class="input-group" style="padding-bottom: 5px; width: 100%">
-				<form ng-submit="queryAPI('danbooru')" class="input-group">
+				<form ng-submit="newQuery('danbooru')" class="input-group">
 					<input id="tag-input" ng-model="tags" type="text" class="form-control">
 					<div class="input-group-btn">
 						<button type="submit" class="btn btn-default btn-primary">
@@ -26,9 +26,24 @@
 			</div><!-- /input-group -->
 
 			<div id="preview_list" class="scroll center">
+				<nav ng-show="data.length > 0">
+					<ul class="pagination">
+						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
+						<li><a>{{ page }}</a></li>
+						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
+					</ul>
+				</nav>
 				<div class="col-lg-6 preview" ng-repeat="entry in data">
-					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-show="entry.file_url" ng-click="setActive(data.indexOf(entry))">
+					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
 				</div>
+
+				<nav ng-show="data.length > 0">
+					<ul class="pagination">
+						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
+						<li><a>{{ page }}</a></li>
+						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
+					</ul>
+				</nav>
 
 			</div>
 

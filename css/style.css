@@ -54,7 +54,7 @@ html, body {
 	overflow-y: auto;
 	word-wrap: break-word;
 }
-li {
+#right-bar li {
 	user-select: text;
 	-webkit-user-select: text;
 }

@@ -34,40 +34,16 @@
 
 		</div>
 
-		<div class="col-xs-9 max-height col-lg-10 center" id="parent">
+		<div class="col-xs-6 max-height col-lg-8 center" id="parent">
 		</div>
 
-		<div id="sidebar" class="max-height">
-			<div class="sidebutton">
-				<button type="button" data-toggle="modal" data-target="#modal" class="btn btn-default">
-					<span class="glyphicon glyphicon-info-sign"></span>
-				</button>
-			</div>
-			<div class="sidebutton">
-				<button type="button" class="btn btn-default">
-					<span class="glyphicon glyphicon-floppy-disk"></span>
-				</button>
-			</div>
-			<div class="sidebutton">
-				<button type="button" class="btn btn-default">
-					<span class="glyphicon glyphicon-wrench"></span>
-				</button>
-			</div>
-		</div>
-
-		<div class="modal fade" id="modal" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-						<h4 class="modal-title">File Information</h4>
-					</div>
-					<div class="modal-body">
-						{{ active }}
-					</div>
-				</div>
-			</div>
-		</div>
+		<div ng-show="active" class="max-height col-xs-3 col-lg-2" id="right-bar">
+			<button class="btn btn-primary btn-default" ng-click="copyURL()" style="width: 100%; margin-bottom: 5px">
+				Copy URL
+			</button>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="tag in active.tag_string.split(' ')">{{ tag }}</li>
+			</ul>
 
 	</body>
 </html>

@@ -1,15 +1,9 @@
 var app = angular.module('app', []);
 
-app.filter("trustUrl", ['$sce', function ($sce) {
-	return function (recordingUrl) {
-		return $sce.trustAsResourceUrl(recordingUrl);
-	};
-}]);
-
 app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.title = "nbb";
 	$scope.page = 1;
-	$scope.tags = "touhou small_breasts";
+	$scope.tags = "";
 	$scope.data = [];
 	$scope.loading = false;
 	$scope.index = -1;
@@ -31,6 +25,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
 		var options = "?limit=100&page=" + $scope.page + "&tags=" + $scope.tags;
+		$scope.title = "nbb - " + $scope.tags;
 		var url = api_data.api + options;
 		$scope.base_url = api_data.base_url;
 		$http.get(url).
@@ -43,12 +38,15 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 	}
 
+	$scope.copyURL = function() {
+		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.base_url + $scope.active.file_url);
+	}
+
 	$scope.setActive = function(index) {
 		$scope.index = index;
 		$(".preview").eq(index).removeClass("selected");
 		$scope.active = $scope.data[index];
 		$(".preview").eq(index).addClass("selected");
-		console.log($scope.active.file_url);
 		$("#image").remove();
 		$("#video").remove();
 		var e = ".preview:eq(" + index + ")";
@@ -57,7 +55,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			var img = $('<img id="image" class="fluid">');
 			img.attr('src', $scope.base_url + $scope.active.file_url);
 			img.appendTo("#parent");
-			console.log("appended");
 		} else if ($scope.VIDEO_TYPES.indexOf($scope.active.file_ext) >= 0) {
 			var video = $('<video>', {
 				id: 'video',
@@ -70,7 +67,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	$(document).keydown(function(e) {
-		console.log("index: " + $scope.index);
 		switch(e.which) {
 			case 38:
 				if ($scope.index > 0) {

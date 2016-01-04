@@ -48,3 +48,7 @@ html, body {
 }
 .sidebutton {
 }
+#right-bar {
+	overflow-y: auto;
+	word-wrap: break-word;
+}

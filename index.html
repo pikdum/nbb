@@ -26,7 +26,7 @@
 			</div><!-- /input-group -->
 
 			<div id="preview_list" class="scroll center">
-				<nav>
+				<nav class="col-xs-12">
 					<ul class="pagination">
 						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
 						<li><a>{{ page }}</a></li>
@@ -37,7 +37,7 @@
 					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
 				</div>
 
-				<nav ng-show="data.length > 0">
+				<nav class="col-xs-12" ng-show="data.length > 0">
 					<ul class="pagination">
 						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
 						<li><a>{{ page }}</a></li>

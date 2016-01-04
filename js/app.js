@@ -1,5 +1,13 @@
 var app = angular.module('app', []);
 
+function toggleFit(e) {
+	if ($(e).hasClass('fluid')) {
+		$(e).removeClass('fluid');
+	} else {
+		$(e).addClass('fluid');
+	}
+}
+
 app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.title = "nbb";
 	$scope.page = 1;
@@ -54,7 +62,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		var e = ".preview:eq(" + index + ")";
 		$("#preview_list").scrollTo(e);
 		if ($scope.IMAGE_TYPES.indexOf($scope.active.file_ext) >= 0) {
-			var img = $('<img id="image" class="fluid">');
+			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
 			img.attr('src', $scope.base_url + $scope.active.file_url);
 			img.appendTo("#parent");
 		} else if ($scope.VIDEO_TYPES.indexOf($scope.active.file_ext) >= 0) {
@@ -68,6 +76,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}
 		$scope.$apply();
 	}
+
 
 	$(document).keydown(function(e) {
 		switch(e.which) {

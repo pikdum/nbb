@@ -84,6 +84,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				id: 'video',
 				class: 'fluid',
 				controls: true,
+				loop: true,
 				src: $scope.base_url + $scope.active.file_url
 			});
 			video.appendTo("#parent");

@@ -33,7 +33,7 @@
 						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
 					</ul>
 				</nav>
-				<div class="col-lg-6 preview" ng-repeat="entry in data">
+				<div class="col-xs-12 preview" ng-repeat="entry in data">
 					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
 				</div>
 

@@ -105,9 +105,10 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.queryAPI($scope.api);
 	}
 
+	var height = $('#search').height() + $('#pagination').height();
+	$('#preview_list').css({ 'max-height': 'calc(100% - ' + height + 'px' });
+
 	$(document).keydown(function(e) {
-		console.log("length: " + $scope.data.length);
-		console.log("indedx: " + $scope.index);
 		switch(e.which) {
 			case 38:
 				if ($scope.index > 0) {
@@ -124,6 +125,4 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				break;
 		}
 	});
-	var url = "http://danbooru.donmai.us/posts.json?limit=100";
-	var additions = "&page=" + $scope.page + "&tags=" + $scope.tags;
 }]);

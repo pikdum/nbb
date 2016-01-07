@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" ng-app="app" ng-controller="appCtrl">
 	<head>
+		<meta charset="utf-8">
 		<title>{{ title }}</title>
 		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
@@ -14,7 +15,7 @@
 	<body>
 		<div class="col-xs-3 max-height col-lg-2">
 
-			<div class="input-group" style="padding-bottom: 5px; width: 100%">
+			<div id="search" class="input-group" style="padding-bottom: 5px; width: 100%">
 				<form ng-submit="newQuery('danbooru')" class="input-group">
 					<input id="tag-input" ng-model="tags" type="text" class="form-control">
 					<div class="input-group-btn">
@@ -26,26 +27,19 @@
 			</div><!-- /input-group -->
 
 			<div id="preview_list" class="scroll center">
-				<nav >
-					<ul class="pagination">
-						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
-						<li><a>{{ page }}</a></li>
-						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
-					</ul>
-				</nav>
 				<div class="col-xs-12 preview" ng-repeat="entry in data">
 					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
 				</div>
 
-				<nav ng-show="data.length > 0">
-					<ul class="pagination">
+			</div>
+
+				<nav class="center">
+					<ul id="pagination" class="pagination">
 						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
 						<li><a>{{ page }}</a></li>
 						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
 					</ul>
 				</nav>
-
-			</div>
 
 		</div>
 
@@ -56,9 +50,11 @@
 			<button class="btn btn-primary btn-default" ng-click="copyURL()" style="width: 100%; margin-bottom: 5px">
 				Copy URL
 			</button>
-			<ul class="list-group">
-				<li class="list-group-item" ng-repeat="tag in active.tag_string.split(' ')">{{ tag }}</li>
-			</ul>
+			<div class="scroll">
+				<ul class="list-group">
+					<li class="list-group-item" ng-repeat="tag in active.tag_string.split(' ')">{{ tag }}</li>
+				</ul>
+			</div>
 
 	</body>
 </html>

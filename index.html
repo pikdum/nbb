@@ -15,7 +15,7 @@
 	<body>
 		<div class="col-xs-3 max-height col-lg-2">
 
-			<div id="search" class="input-group" style="padding-bottom: 5px; width: 100%">
+			<div id="search" class="input-group max-width">
 				<form ng-submit="newQuery('danbooru')" class="input-group">
 					<input id="tag-input" ng-model="tags" type="text" class="form-control">
 					<div class="input-group-btn">
@@ -26,35 +26,42 @@
 				</form>
 			</div><!-- /input-group -->
 
-			<div id="preview_list" class="scroll center">
+			<div id="preview_list" class="scroll center margin">
 				<div class="col-xs-12 preview" ng-repeat="entry in data">
 					<img class="fluid" ng-src="{{ base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
 				</div>
 
 			</div>
 
-				<nav class="center">
-					<ul id="pagination" class="pagination">
-						<li><a ng-click="incPage(0)"><span>&laquo;</span></a></li>
-						<li><a>{{ page }}</a></li>
-						<li><a ng-click="incPage(1)"><span>&raquo;</span></a></li>
-					</ul>
-				</nav>
+			<div id="pagination" class="btn-group btn-group-justified">
+				<a class="btn btn-default" ng-click="incPage(0)">&laquo;</a>
+				<a class="btn btn-default">{{ page }}</a>
+				<a class="btn btn-default" ng-click="incPage(1)">&raquo;</a>
+			</div>
 
 		</div>
 
 		<div class="col-xs-6 max-height col-lg-8 center" id="parent">
 		</div>
 
-		<div ng-show="active" class="max-height col-xs-3 col-lg-2" id="right-bar">
-			<button class="btn btn-primary btn-default" ng-click="copyURL()" style="width: 100%; margin-bottom: 5px">
-				Copy URL
+		<div class="max-height col-xs-3 col-lg-2" id="right-bar">
+			<button id="booru-button" type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="booru-dropdown">
+				<img src="http://danbooru.donmai.us/favicon.ico">
+				Danbooru
 			</button>
-			<div class="scroll">
+
+			<div class="scroll margin" id="tag_list">
 				<ul class="list-group">
-					<li class="list-group-item" ng-repeat="tag in active.tag_string.split(' ')">{{ tag }}</li>
+					<li ng-class="{active: tags.indexOf(tag) > -1}" class="list-group-item" ng-repeat="tag in active.tag_string.split(' ')">{{ tag }}</li>
 				</ul>
 			</div>
+
+			<div id="buttons" class="btn-group btn-group-justified">
+				<a class="btn btn-default" ng-click="copyURL()">
+					<span class="glyphicon glyphicon-copy"></span>
+				</a>
+			</div>
+		</div>
 
 	</body>
 </html>

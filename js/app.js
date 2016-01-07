@@ -36,11 +36,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	$scope.queryAPI = function(api) {
+		$scope.tags = $scope.tags.toLowerCase();
 		$scope.api = api;
 		$scope.index = -1;
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
-		var options = "?limit=100&page=" + $scope.page + "&tags=" + $scope.tags;
+		var options = "?limit=100&page=" + $scope.page + "&tags=" + $.parseHTML($scope.tags)[0].data;
+		console.log(options);
 		$scope.title = "nbb - " + $scope.tags;
 		var url = api_data.api + options;
 		$scope.base_url = api_data.base_url;
@@ -105,8 +107,10 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.queryAPI($scope.api);
 	}
 
-	var height = $('#search').height() + $('#pagination').height();
-	$('#preview_list').css({ 'max-height': 'calc(100% - ' + height + 'px' });
+	var height = $('#search').outerHeight(true) + $('#pagination').outerHeight(true);
+	$('#preview_list').css({ 'max-height': 'calc(100% - ' + height + 'px - 10px)' });
+	var height = $('#booru-button').outerHeight(true) + $('#buttons').outerHeight(true);
+	$('#tag_list').css({ 'max-height': 'calc(100% - ' + height + 'px - 10px)' });
 
 	$(document).keydown(function(e) {
 		switch(e.which) {

@@ -23,7 +23,19 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		"danbooru": {
 			"name": "Danbooru",
 			"base_url": "https://danbooru.donmai.us",
-			"api": "http://danbooru.donmai.us/posts.json",
+			"api": "https://danbooru.donmai.us/posts.json",
+			"api_type": "json"
+		},
+		"danbooru (sfw)": {
+			"name": "Safebooru (sfw)",
+			"base_url": "https://safebooru.donmai.us",
+			"api": "https://safebooru.donmai.us/posts.json",
+			"api_type": "json"
+		},
+		"yande.re": {
+			"name": "yande.re",
+			"base_url": "https://yande.re",
+			"api": "https://yande.re/post.json",
 			"api_type": "json"
 		}
 	}
@@ -66,13 +78,14 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	$scope.copyURL = function() {
-		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.base_url + $scope.active.file_url);
+		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.src);
 	}
 
 	$scope.setActive = function(index) {
 		$scope.index = index;
 		$(".preview").eq(index).removeClass("selected");
 		$scope.active = $scope.data[index];
+		console.log($scope.active);
 		$(".preview").eq(index).addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
@@ -80,17 +93,25 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		setTimeout(function() {
 			$("#preview_list").scrollTo(e, 100);
 		}, 100);
-		if ($scope.IMAGE_TYPES.indexOf($scope.active.file_ext) >= 0) {
+		var file_url = $scope.active.file_url;
+		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
+				file_url : $scope.base_url + file_url;
+		$scope.src = src;
+		console.log(src);
+		var ext = src.split('.').slice(-1)[0];
+		console.log(ext);
+		if ($scope.IMAGE_TYPES.indexOf(ext) >= 0) {
 			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
-			img.attr('src', $scope.base_url + $scope.active.file_url);
+			console.log(src);
+			img.attr('src', src);
 			img.appendTo("#parent");
-		} else if ($scope.VIDEO_TYPES.indexOf($scope.active.file_ext) >= 0) {
+		} else if ($scope.VIDEO_TYPES.indexOf(ext) >= 0) {
 			var video = $('<video>', {
 				id: 'video',
 				class: 'fluid',
 				controls: true,
 				loop: true,
-				src: $scope.base_url + $scope.active.file_url
+				src: src
 			});
 			video.appendTo("#parent");
 		}

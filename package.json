@@ -4,6 +4,6 @@
 	"main": "index.html",
 	"window": {
 		"toolbar": false,
-		"icon": "icon.png"
+		"icon": "logo.png"
 	}
 }

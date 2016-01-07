@@ -90,7 +90,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.index = index;
 		$(".preview").eq(index).removeClass("selected");
 		$scope.active = $scope.data[index];
-		console.log($scope.active);
 		$(".preview").eq(index).addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
@@ -102,12 +101,9 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
 				file_url : $scope.base_url + file_url;
 		$scope.src = src;
-		console.log(src);
 		var ext = src.split('.').slice(-1)[0];
-		console.log(ext);
 		if ($scope.IMAGE_TYPES.indexOf(ext) >= 0) {
 			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
-			console.log(src);
 			img.attr('src', src);
 			img.appendTo("#parent");
 		} else if ($scope.VIDEO_TYPES.indexOf(ext) >= 0) {

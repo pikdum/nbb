@@ -41,12 +41,15 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.index = -1;
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
-		var options = "?limit=100&page=" + $scope.page + "&tags=" + $.parseHTML($scope.tags)[0].data;
-		console.log(options);
+		var options = {
+			limit: '100',
+			page: $scope.page,
+			tags: $scope.tags
+		};
 		$scope.title = "nbb - " + $scope.tags;
-		var url = api_data.api + options;
+		var url = api_data.api;
 		$scope.base_url = api_data.base_url;
-		$http.get(url).
+		$http.get(url, {params: options}).
 			success(function(data) {
 				$scope.data = data;
 				$scope.data = $scope.data.filter(function(v) {

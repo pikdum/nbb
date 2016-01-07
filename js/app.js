@@ -15,6 +15,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.data = [];
 	$scope.loading = false;
 	$scope.index = -1;
+	$scope.current_api = "danbooru (sfw)";
 
 	$scope.IMAGE_TYPES = ["jpg", "png", "gif"];
 	$scope.VIDEO_TYPES = ["webm", "mp4"];
@@ -27,7 +28,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			"api_type": "json"
 		},
 		"danbooru (sfw)": {
-			"name": "Safebooru (sfw)",
+			"name": "Danbooru (sfw)",
 			"base_url": "https://safebooru.donmai.us",
 			"api": "https://safebooru.donmai.us/posts.json",
 			"api_type": "json"
@@ -41,6 +42,10 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	$('#tag-input').focus();
+
+	$scope.setAPI = function(api) {
+		$scope.current_api = api;
+	}
 
 	$scope.newQuery = function(api) {
 		$scope.page = 1;

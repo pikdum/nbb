@@ -93,7 +93,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$(".preview").eq(index).addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
-		$("#flash").remove();
 		var e = ".preview:eq(" + index + ")";
 		setTimeout(function() {
 			$("#preview_list").scrollTo(e, 100);

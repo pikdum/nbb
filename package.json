@@ -7,6 +7,6 @@
 		"icon": "logo.png"
 	},
 	"webkit": {
-		"plugin": true
+		"plugin": false
 	}
 }

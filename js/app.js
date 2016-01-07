@@ -116,7 +116,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 			video.appendTo("#parent");
 		}
-		$scope.$apply();
 	}
 
 
@@ -138,20 +137,22 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$('#tag_list').css({ 'max-height': 'calc(100% - ' + height + 'px - 10px)' });
 
 	$(document).keydown(function(e) {
-		switch(e.which) {
-			case 38:
-				if ($scope.index > 0) {
-					$scope.index = $scope.index - 1;
-					$scope.setActive($scope.index);
-				}
-				break;
-			case 40:
-				if ($scope.index < $scope.data.length - 1 &&
-						$scope.data.length > 0) {
-					$scope.index = $scope.index + 1;
-					$scope.setActive($scope.index);
-				}
-				break;
-		}
+		$scope.$apply(function() {
+			switch(e.which) {
+				case 38:
+					if ($scope.index > 0) {
+						$scope.index = $scope.index - 1;
+						$scope.setActive($scope.index);
+					}
+					break;
+				case 40:
+					if ($scope.index < $scope.data.length - 1 &&
+							$scope.data.length > 0) {
+						$scope.index = $scope.index + 1;
+						$scope.setActive($scope.index);
+					}
+					break;
+			}
+		});
 	});
 }]);

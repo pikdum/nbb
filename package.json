@@ -5,5 +5,8 @@
 	"window": {
 		"toolbar": false,
 		"icon": "logo.png"
+	},
+	"webkit": {
+		"plugin": true
 	}
 }

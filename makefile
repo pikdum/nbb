@@ -25,4 +25,5 @@ linux-update:
 	cd build/nbb/linux64 && zip nbb_linux.zip * -R && scp nbb_linux.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_linux.zip
 
 clean:
+	rm -f core
 	rm -rf build

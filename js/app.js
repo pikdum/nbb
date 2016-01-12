@@ -63,7 +63,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			page: $scope.page,
 			tags: $scope.tags
 		};
-		$scope.title = "nbb - " + $scope.tags;
+		$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
+		console.log($scope.title);
 		var url = api_data.api;
 		$scope.base_url = api_data.base_url;
 		$http.get(url, {params: options}).
@@ -166,6 +167,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 					break;
 				case 13:
 					$scope.newQuery($scope.current_api);
+					break;
+				case 37:
+					$scope.incPage(0);
+					break;
+				case 39:
+					$scope.incPage(1);
+					break;
 			}
 		});
 	});

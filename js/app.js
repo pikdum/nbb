@@ -119,6 +119,18 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 
+	$scope.addRemoveTag = function(tag) {
+		var tag = tag.toLowerCase();
+		var split = $scope.tags.split(' ');
+		var index = split.indexOf(tag);
+		if (index > -1) {
+			split.splice(index, 1);
+		} else {
+			split.push(tag);
+		}
+		$scope.tags = split.join(" ");
+	}
+
 	$scope.incPage = function(v) {
 		if ($scope.page == 1 && !v) {
 			return;
@@ -152,6 +164,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 						$scope.setActive($scope.index);
 					}
 					break;
+				case 13:
+					$scope.newQuery($scope.current_api);
 			}
 		});
 	});

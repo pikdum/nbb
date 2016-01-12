@@ -53,10 +53,6 @@ html, body {
 	overflow-y: auto;
 	word-wrap: break-word;
 }
-#right-bar li {
-	user-select: text;
-	-webkit-user-select: text;
-}
 #parent {
 	overflow: auto;
 }

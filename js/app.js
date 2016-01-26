@@ -16,6 +16,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.loading = false;
 	$scope.index = -1;
 	$scope.current_api = "danbooru (sfw)";
+	$scope.maximized = false;
+	$scope.preloadCount = 3;
 
 	$scope.IMAGE_TYPES = ["jpg", "png", "gif"];
 	$scope.VIDEO_TYPES = ["webm", "mp4"];
@@ -64,7 +66,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			tags: $scope.tags
 		};
 		$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
-		console.log($scope.title);
 		var url = api_data.api;
 		$scope.base_url = api_data.base_url;
 		$http.get(url, {params: options}).
@@ -87,7 +88,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.src);
 	}
 
-	$scope.maximized = false;
 	$scope.toggleFullscreen = function() {
 		$scope.maximized = !$scope.maximized;
 		if ($scope.maximized) {
@@ -130,8 +130,19 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 			video.appendTo("#parent");
 		}
+		$scope.preload();
 	}
 
+	$scope.preload = function() {
+		var images = new Array();
+		for (var i = 0; i < $scope.preloadCount; i++) {
+			var file_url = $scope.data[$scope.index + i].file_url;
+			var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
+				file_url : $scope.base_url + file_url;
+			images[i] = new Image();
+			images[i].src = src;
+		}
+	}
 
 	$scope.addRemoveTag = function(tag) {
 		var tag = tag.toLowerCase();

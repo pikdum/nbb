@@ -87,6 +87,19 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.src);
 	}
 
+	$scope.maximized = false;
+	$scope.toggleFullscreen = function() {
+		$scope.maximized = !$scope.maximized;
+		if ($scope.maximized) {
+			$('#parent').removeClass('col-xs-6');
+			$('#parent').removeClass('col-lg-8');
+			$('#parent').addClass('col-xs-12');
+		} else {
+			$('#parent').addClass('col-xs-6');
+			$('#parent').addClass('col-lg-8');
+		}
+	}
+
 	$scope.setActive = function(index) {
 		$scope.index = index;
 		$(".preview").eq(index).removeClass("selected");
@@ -173,6 +186,9 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 					break;
 				case 39:
 					$scope.incPage(1);
+					break;
+				case 27:
+					$scope.toggleFullscreen();
 					break;
 			}
 		});

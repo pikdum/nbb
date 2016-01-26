@@ -1,8 +1,6 @@
 .max-height {
-	padding-top: 5px;
 	height: 100vh;
 	max-height: 100vh;
-	padding-bottom: 5px;
 }
 .fluid {
 	max-width: 100%;
@@ -26,28 +24,10 @@ html, body {
 .preview {
 	margin: 0px;
 	padding: 0px;
-	padding-bottom: 5px;
 }
-#sidebar {
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	min-width: 40px;
-	padding-right: 0px;
+#right-bar, #left-bar {
 	padding-top: 5px;
-	padding: 10px;
-}
-#sidebar button {
-	opacity: 0;
-	transition: opacity 0.5s ease-in-out;
-	margin-bottom: 5px;
-}
-#sidebar:hover button {
-	filter: alpha(opacity=1);
-	opacity: 1;
-	display: block;
-}
-.sidebutton {
+	padding-bottom: 5px;
 }
 #right-bar {
 	overflow-y: auto;
@@ -55,6 +35,7 @@ html, body {
 }
 #parent {
 	overflow: auto;
+	background-color: black;
 }
 .max-width {
 	width: 100%;

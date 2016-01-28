@@ -66,15 +66,15 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.index = -1;
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
+		var url = api_data.api;
+		$scope.base_url = api_data.base_url;
+		$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
 		if (api_data.api_type == "json") {
 			var options = {
 				limit: '100',
 				page: $scope.page,
 				tags: $scope.tags
 			};
-			$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
-			var url = api_data.api;
-			$scope.base_url = api_data.base_url;
 			$http.get(url, {params: options}).
 				success(function(data) {
 					$scope.data = data;
@@ -98,8 +98,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				pid: $scope.page,
 				tags: $scope.tags
 			};
-			var url = api_data.api;
-			$scope.base_url = api_data.base_url;
 			$http.get(url, {params: options}).
 				success(function(data) {
 					var x2js = new X2JS();

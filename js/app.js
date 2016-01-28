@@ -15,7 +15,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.data = [];
 	$scope.loading = false;
 	$scope.index = -1;
-	$scope.current_api = "safebooru";
+	$scope.current_api = "danbooru (sfw)";
 	$scope.maximized = false;
 	$scope.preloadCount = 3;
 

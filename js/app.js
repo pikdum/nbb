@@ -15,7 +15,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.data = [];
 	$scope.loading = false;
 	$scope.index = -1;
-	$scope.current_api = "danbooru (sfw)";
+	$scope.current_api = "safebooru";
 	$scope.maximized = false;
 	$scope.preloadCount = 3;
 
@@ -23,6 +23,12 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.VIDEO_TYPES = ["webm", "mp4"];
 
 	$scope.apis = {
+		"safebooru": {
+			"name": "Safebooru",
+			"base_url": "http://safebooru.org",
+			"api": "http://safebooru.org/index.php",
+			"api_type": "xml"
+		},
 		"danbooru": {
 			"name": "Danbooru",
 			"base_url": "https://danbooru.donmai.us",
@@ -60,28 +66,61 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.index = -1;
 		$scope.loading = true;
 		var api_data = $scope.apis[api];
-		var options = {
-			limit: '100',
-			page: $scope.page,
-			tags: $scope.tags
-		};
-		$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
-		var url = api_data.api;
-		$scope.base_url = api_data.base_url;
-		$http.get(url, {params: options}).
-			success(function(data) {
-				$scope.data = data;
-				$scope.data = $scope.data.filter(function(v) {
-					return v.file_url;
+		if (api_data.api_type == "json") {
+			var options = {
+				limit: '100',
+				page: $scope.page,
+				tags: $scope.tags
+			};
+			$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
+			var url = api_data.api;
+			$scope.base_url = api_data.base_url;
+			$http.get(url, {params: options}).
+				success(function(data) {
+					$scope.data = data;
+					$scope.data = $scope.data.filter(function(v) {
+						return v.file_url;
+					});
+					$scope.loading = false;
+					setTimeout(function() {
+						$("#preview_list").scrollTo(0, 100);
+					}, 100);
+				}).error(function() {
+					console.log("error");
+					$scope.loading = false;
 				});
-				$scope.loading = false;
-				setTimeout(function() {
-					$("#preview_list").scrollTo(0, 100);
-				}, 100);
-			}).error(function() {
-				console.log("error");
-				$scope.loading = false;
-			});
+		} else if (api_data.api_type == "xml") {
+			var options = {
+				page: 'dapi',
+				s: 'post',
+				q: 'index',
+				limit: '100',
+				pid: $scope.page,
+				tags: $scope.tags
+			};
+			var url = api_data.api;
+			$scope.base_url = api_data.base_url;
+			$http.get(url, {params: options}).
+				success(function(data) {
+					var x2js = new X2JS();
+					var posts = x2js.xml_str2json(data)['posts']['post'];
+					$scope.data = [];
+					for (var i = 0; i < posts.length; i++) {
+						var e = {};
+						e.preview_url = posts[i]._preview_url;
+						e.file_url = posts[i]._file_url;
+						e.tag_string = posts[i]._tags;
+						$scope.data.push(e);
+					}
+					$scope.loading = false;
+					setTimeout(function() {
+						$("#preview_list").scrollTo(0, 100);
+					}, 100);
+				}).error(function() {
+					console.log("error");
+					$scope.loading = false;
+				});
+		}
 	}
 
 	$scope.copyURL = function() {

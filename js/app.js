@@ -95,7 +95,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				s: 'post',
 				q: 'index',
 				limit: '100',
-				pid: $scope.page,
+				pid: $scope.page - 1,
 				tags: $scope.tags
 			};
 			$http.get(url, {params: options}).

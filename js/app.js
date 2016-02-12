@@ -139,14 +139,16 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	$scope.setActive = function(index) {
 		$scope.index = index;
-		$(".preview").eq(index).removeClass("selected");
+		$(".selected").removeClass("selected");
 		$scope.active = $scope.data[index];
-		$(".preview").eq(index).addClass("selected");
+		$(".preview").eq(index).parent().addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
 		var e = ".preview:eq(" + index + ")";
 		setTimeout(function() {
-			$("#preview_list").scrollTo(e, 100);
+			$("#preview_list").scrollTo(e, 100, {
+				offset: 0 - $(window).width() / 3
+			});
 		}, 100);
 		var file_url = $scope.active.file_url;
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
@@ -213,30 +215,36 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$(document).keydown(function(e) {
 		$scope.$apply(function() {
 			switch(e.which) {
+				// up
 				case 38:
+					$scope.incPage(1);
+					break;
+				// down
+				case 40:
+					$scope.incPage(0);		
+					break;
+				// enter
+				case 13:
+					$scope.newQuery($scope.current_api);
+					break;
+				// left
+				case 37:
 					if ($scope.index > 0) {
 						$scope.index = $scope.index - 1;
 						$scope.setActive($scope.index);
 					}
 					break;
-				case 40:
+				// right
+				case 39:
 					if ($scope.index < $scope.data.length - 1 &&
-							$scope.data.length > 0) {
+						$scope.data.length > 0) {
 						$scope.index = $scope.index + 1;
 						$scope.setActive($scope.index);
 					}
 					break;
-				case 13:
-					$scope.newQuery($scope.current_api);
-					break;
-				case 37:
-					$scope.incPage(0);
-					break;
-				case 39:
-					$scope.incPage(1);
-					break;
+				// esc
 				case 27:
-					$scope.toggleFullscreen();
+					//$scope.toggleFullscreen();
 					break;
 			}
 		});

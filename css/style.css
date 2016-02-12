@@ -1,6 +1,6 @@
 .max-height {
-	height: 100vh;
-	max-height: 100vh;
+	height: calc(100vh - 50px);
+	max-height: calc(100vh - 50px);
 }
 .fluid {
 	max-width: 100%;
@@ -21,13 +21,10 @@ html, body {
 .center {
 	text-align: center;
 }
-.preview {
-	margin: 0px;
-	padding: 0px;
-}
 #right-bar, #left-bar {
 	padding-top: 5px;
 	padding-bottom: 5px;
+	overflow-x: scroll;
 }
 #right-bar {
 	overflow-y: auto;
@@ -45,6 +42,67 @@ html, body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+.nomargin {
+	margin: 0px;
+}
+nav {
+	margin: 0px !important;
+	padding: 0px !important;
+}
 .dropdown-menu {
 	overflow: visible !important;
+}
+#tag-list {
+	position: fixed;
+	top: 60px;
+	right: 5px;
+	height: calc(100vh - 65px - 160px);
+	z-index: 4;
+	overflow-y: auto;
+	opacity: 0;
+	word-wrap: break-word;
+}
+#tag-list:hover {
+	opacity: 1;
+}
+.horizontal-scroll {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 170px;
+	width: 100vw;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	z-index: 5;
+	background: transparent;
+	opacity: 0;
+}
+
+.horizontal-scroll:hover {
+	opacity: 1;
+}
+
+.horizontal-scroll a {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 5px;
+	margin-right: 5px;
+	border-top: solid;
+	border-color: transparent;
+	border-top-width: 10px;
+}
+
+.horizontal-scroll a img {
+	max-height: 140px;
+	width: auto;
+}
+a, button, input {
+	-webkit-app-region: no-drag;
+}
+.selected {
+	border-color: #286090 !important;
+}
+.show {
+	opacity: 1 !important;
 }

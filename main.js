@@ -15,8 +15,8 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		"node-integration": false,
-		toolbar: false});
+		"node-integration": false
+	});
 
 	// and load the index.html of the app.
 	mainWindow.loadURL('file://' + __dirname + '/index.html');

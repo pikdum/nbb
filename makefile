@@ -9,20 +9,23 @@ all:
 
 logo:
 	convert logo.png -define icon:auto-resize=64,48,32,16 bin/nbb-win32-x64/logo.ico
-	cd bin/nbb-win32-x64 && wine ~/code/resource_hacker/ResourceHacker.exe -addoverwrite "nbb.exe", "nbb.exe", "logo.ico", ICONGROUP, MAINICON, 0 && wine ~/code/resource_hacker/ResourceHacker.exe -addoverwrite "nbb.exe", "nbb.exe", "logo.ico", ICONGROUP, IDR_MAINFRAME, 1033
+	cd bin/nbb-win32-x64 && \
+		wine ~/code/resource_hacker/ResourceHacker.exe -addoverwrite "nbb.exe", "nbb.exe", "logo.ico", ICONGROUP, MAINICON, 0 && \
+		wine ~/code/resource_hacker/ResourceHacker.exe -addoverwrite "nbb.exe", "nbb.exe", "logo.ico", ICONGROUP, IDR_MAINFRAME, 1033 && \
+		wine ~/code/resource_hacker/ResourceHacker.exe -addoverwrite "nbb.exe", "nbb.exe", "logo.ico", ICONGROUP, 1, 0
 
 win:
-	electron-packager . nbb --platform=win32 --arch=x64 --out="bin" --ignore="bin" --version=0.36.7 --overwrite
+	electron-packager . nbb --platform=win32 --arch=x64 --out="bin" --ignore="bin" --version=0.36.7 --overwrite --name="nbb"
 	make logo
 
 win-update:
-	cd bin/nbb-win32-x64 && zip nbb_win.zip * -R && scp nbb_win.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_win.zip
+	cd bin/nbb-win32-x64 && zip nbb_win.zip * -r && scp nbb_win.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_win.zip
 
 linux:
-	electron-packager . nbb --platform=linux --arch=x64 --out="bin" --ignore="bin" --version=0.36.7 --overwrite
+	electron-packager . nbb --platform=linux --arch=x64 --out="bin" --ignore="bin" --version=0.36.7 --overwrite --name="nbb"
 
 linux-update:
-	cd bin/nbb-linux-x64 && zip nbb_linux.zip * -R && scp nbb_linux.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_linux.zip
+	cd bin/nbb-linux-x64 && zip nbb_linux.zip * -r && scp nbb_linux.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_linux.zip
 
 clean:
 	rm -f core

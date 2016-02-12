@@ -1,5 +1,6 @@
 all:
 	make clean
+	make surge
 	make win
 	make win-update
 	make clean
@@ -8,6 +9,9 @@ all:
 	make darwin
 	make darwin-update
 	make clean
+
+surge:
+	surge -p .
 
 logo:
 	convert logo.png -define icon:auto-resize=64,48,32,16 bin/nbb-win32-x64/logo.ico

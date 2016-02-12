@@ -9,9 +9,15 @@ const BrowserWindow = electron.BrowserWindow;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+var debug = false;
 
 function createWindow () {
 	// Create the browser window.
+	process.argv.forEach((val, index, array) => {
+		if (val == 'debug') {
+			debug = true;
+		}
+	});
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -21,11 +27,12 @@ function createWindow () {
 	});
 
 	// and load the index.html of the app.
-	mainWindow.loadURL('file://' + __dirname + '/index.html');
-	//mainWindow.loadURL('https://nbb.surge.sh/index.html');
-
-	// Open the DevTools.
-	//mainWindow.webContents.openDevTools();
+	if (debug) {
+		mainWindow.loadURL('file://' + __dirname + '/index.html');
+		mainWindow.webContents.openDevTools();
+	} else {
+		mainWindow.loadURL('https://nbb.surge.sh');
+	}
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function() {
@@ -36,7 +43,6 @@ function createWindow () {
 	});
 
 	mainWindow.setMenu(null);
-
 }
 
 // This method will be called when Electron has finished

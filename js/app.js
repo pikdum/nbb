@@ -19,6 +19,12 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	$scope.maximized = false;
 	$scope.preloadCount = 3;
 
+	new Clipboard('.clipboard');
+	
+	toastr.options = {
+		"positionClass": "toast-bottom-right"
+	}
+
 	$scope.IMAGE_TYPES = ["jpg", "png", "gif"];
 	$scope.VIDEO_TYPES = ["webm", "mp4"];
 
@@ -26,24 +32,28 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		"safebooru": {
 			"name": "Safebooru",
 			"base_url": "http://safebooru.org",
+			"page_url": "http://safebooru.org/index.php?page=post&s=view&id=",
 			"api": "http://safebooru.org/index.php",
 			"api_type": "xml"
 		},
 		"danbooru": {
 			"name": "Danbooru",
 			"base_url": "https://danbooru.donmai.us",
+			"page_url": "https://danbooru.donmai.us/posts/",
 			"api": "https://danbooru.donmai.us/posts.json",
 			"api_type": "json"
 		},
 		"danbooru (sfw)": {
 			"name": "Danbooru (sfw)",
 			"base_url": "https://safebooru.donmai.us",
+			"page_url": "https://safebooru.donmai.us/posts/",
 			"api": "https://safebooru.donmai.us/posts.json",
 			"api_type": "json"
 		},
 		"yande.re": {
 			"name": "yande.re",
 			"base_url": "https://yande.re",
+			"page_url": "https://yande.re/post/show/",
 			"api": "https://yande.re/post.json",
 			"api_type": "json"
 		}
@@ -108,6 +118,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 						e.preview_url = posts[i]._preview_url;
 						e.file_url = posts[i]._file_url;
 						e.tag_string = posts[i]._tags;
+						e.id = posts[i]._id;
 						$scope.data.push(e);
 					}
 					$scope.loading = false;

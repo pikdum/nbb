@@ -5,11 +5,14 @@
 		<title>{{ title }}</title>
 		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="static/toastr.min.css">
 		<script src="static/angular.min.js"></script>
 		<script src="static/jquery.min.js"></script>
 		<script src="static/jquery.scrollTo.min.js"></script>
 		<script src="static/bootstrap/js/bootstrap.min.js"></script>
 		<script src="static/xml2json.min.js"></script>
+		<script src="static/toastr.min.js"></script>
+		<script src="static/clipboard.min.js"></script>
 		<script src="js/app.js"></script>
 	</head>
 	<body>
@@ -55,6 +58,12 @@
 						<li><a href="index.html">
 							<span class="glyphicon glyphicon-refresh"></span>
 						</a></li>
+						<li>
+							<input id="page_url" type="text" ng-value="apis[api].page_url + active.id">
+							<a onclick="toastr.success('URL copied!');" class="clipboard" data-clipboard-target="#page_url">
+								<span class="glyphicon glyphicon-link"></span>
+							</a>
+						</li>
 						<li>
 							<a download ng-href="{{ src }}">
 								<span class="glyphicon glyphicon-save"></span>

@@ -16,11 +16,13 @@ function createWindow () {
 		width: 800,
 		height: 600,
 		"node-integration": false,
-		frame: false
+		frame: false,
+		'web-preferences': {'web-security': false}
 	});
 
 	// and load the index.html of the app.
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
+	//mainWindow.loadURL('https://nbb.surge.sh/index.html');
 
 	// Open the DevTools.
 	//mainWindow.webContents.openDevTools();

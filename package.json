@@ -1,27 +1,20 @@
 {
-  "name": "electron-quick-start",
+  "name": "nbb",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A booru browser written in js.",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atom/electron-quick-start.git"
+    "url": "git+http://git.kuudere.moe/pikdum/nbb"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "booru"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/atom/electron-quick-start/issues"
-  },
-  "homepage": "https://github.com/atom/electron-quick-start#readme",
+  "author": "pikdum",
+  "homepage": "https://kuudere.moe",
   "devDependencies": {
     "electron-prebuilt": "^0.36.0"
   }

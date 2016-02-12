@@ -5,6 +5,8 @@ all:
 	make clean
 	make linux
 	make linux-update
+	make darwin
+	make darwin-update
 	make clean
 
 logo:
@@ -26,6 +28,12 @@ linux:
 
 linux-update:
 	cd bin/nbb-linux-x64 && zip nbb_linux.zip * -r && scp nbb_linux.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_linux.zip
+
+darwin:
+	electron-packager . nbb --platform=darwin --arch=x64 --out="bin" --ignore="bin" --version=0.36.7 --overwrite --name="nbb"
+
+darwin-update:
+	cd bin/nbb-darwin-x64 && zip nbb_osx.zip * -r && scp nbb_osx.zip root@db.kuudere.moe:/root/kuudere.moe/forum-frontend/ && rm nbb_osx.zip
 
 clean:
 	rm -f core

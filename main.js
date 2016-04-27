@@ -21,18 +21,13 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		"node-integration": false,
-		frame: false,
-		'web-preferences': {'web-security': false}
+		"nodeIntegration": false,
+		frame: true,
+		'options.webPreferences': {'web-security': false}
 	});
 
 	// and load the index.html of the app.
-	if (debug) {
-		mainWindow.loadURL('file://' + __dirname + '/index.html');
-		mainWindow.webContents.openDevTools();
-	} else {
-		mainWindow.loadURL('https://nbb.surge.sh');
-	}
+	mainWindow.loadURL('file://' + __dirname + '/index.html');
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function() {

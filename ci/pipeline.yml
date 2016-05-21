@@ -9,7 +9,7 @@ resources:
     type: git
 
 jobs:
-  - name: build
+  - name: build + deploy
     plan:
       - get: nbb
         trigger: true
@@ -25,5 +25,5 @@ jobs:
             type: docker-image
             source: {repository: pikdum/build}
           run:
-            path: echo
-            args: [{{ssh_user}},{{ssh_host}},{{ssh_key}}]
+            path: sh
+            args: ["nbb/ci/deploy.sh",{{ssh_user}},{{ssh_host}},{{ssh_key}}]

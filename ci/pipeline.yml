@@ -26,4 +26,4 @@ jobs:
             source: {repository: node}
           run:
             path: echo
-            args: [{{ test }}]
+            args: [{{ssh_user}},{{ssh_host}},{{ssh_key}}]

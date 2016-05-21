@@ -21,7 +21,9 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		"nodeIntegration": false,
+		webPreferences: {
+			nodeIntegration: false
+		},
 		frame: true,
 		'options.webPreferences': {'web-security': false}
 	});

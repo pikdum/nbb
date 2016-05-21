@@ -15,16 +15,15 @@ jobs:
         trigger: true
       - task: build
         file: nbb/ci/build.yml
-  - name: deploy
-    plan:
       - task: deploy
         config:
           platform: linux
           inputs:
             - name: package
+              trigger: true
           image_resource:
             type: docker-image
             source: {repository: node}
           run:
             path: echo
-            args: ["{{ test}}"]
+            args: [{{ test }}]

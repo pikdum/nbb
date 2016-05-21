@@ -21,6 +21,7 @@ jobs:
           inputs:
             - name: package
               trigger: true
+            - name: nbb
           image_resource:
             type: docker-image
             source: {repository: pikdum/build}

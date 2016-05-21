@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-echo $1
-echo $2
-echo $3
-echo $4
+cat "$3" > key
+scp -i key package/* ${1}@${2}:/var/www/files/nbb/

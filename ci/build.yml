@@ -1,0 +1,16 @@
+# vim:ft=ansible:
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: {repository: node}
+
+inputs:
+  - name: nbb
+
+outputs:
+  - name: package
+
+run:
+  path: sh
+  args: ["nbb/ci/build.sh"]

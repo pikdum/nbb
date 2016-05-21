@@ -1,0 +1,15 @@
+# vim:ft=ansible:
+resources:
+  - name: nbb
+    type: git
+    source:
+      uri: http://git.kuudere.moe/pikdum/nbb
+      branch: master
+
+jobs:
+  - name: build
+    plan:
+      - get: nbb
+        trigger: true
+      - task: build
+        file: nbb/ci/build.yml

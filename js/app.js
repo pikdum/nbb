@@ -25,7 +25,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		"positionClass": "toast-bottom-right"
 	}
 
-	$scope.IMAGE_TYPES = ["jpg", "png", "gif"];
+	$scope.IMAGE_TYPES = ["jpg", "png", "gif", "jpeg"];
 	$scope.VIDEO_TYPES = ["webm", "mp4"];
 
 	$scope.apis = {
@@ -158,8 +158,11 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	$scope.setActive = function(index) {
 		$scope.index = index;
+		console.log("[DEBUG] index: " + $scope.index);
 		$(".selected").removeClass("selected");
 		$scope.active = $scope.data[index];
+		console.log("[DEBUG] active:");
+		console.log($scope.active);
 		$(".preview").eq(index).parent().addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
@@ -173,6 +176,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
 				file_url : $scope.base_url + file_url;
 		$scope.src = src;
+		console.log("[DEBUG] src: " + $scope.src);
 		var ext = src.split('.').slice(-1)[0];
 		if ($scope.IMAGE_TYPES.indexOf(ext) >= 0) {
 			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');

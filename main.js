@@ -30,6 +30,7 @@ function createWindow () {
 
 	// and load the index.html of the app.
 	mainWindow.loadURL('file://' + __dirname + '/index.html');
+	//mainWindow.webcontents.openDevTools();
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function() {

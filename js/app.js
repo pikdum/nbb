@@ -36,6 +36,14 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			"api": "http://safebooru.org/index.php",
 			"api_type": "xml"
 		},
+		"gelbooru": {
+			"name": "Gelbooru",
+			"base_url": "http://gelbooru.com",
+			"page_url": "http://gelbooru.com/index.php?page=post&s=view&id=",
+			"api": "http://gelbooru.com/index.php",
+			"api_type": "xml",
+			"favicon": "http://gelbooru.com/favicon.png"
+		},
 		"danbooru": {
 			"name": "Danbooru",
 			"base_url": "https://danbooru.donmai.us",

@@ -35,12 +35,14 @@
 						</div>
 						<div class="btn-group navbar-btn">
 						<button id="booru-button" type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
-							<img ng-src="{{ apis[current_api].base_url + '/favicon.ico' }}">
+							<img ng-hide="apis[current_api].favicon" ng-src="{{ apis[current_api].base_url + '/favicon.ico' }}">
+							<img ng-show="apis[current_api].favicon" ng-src="{{ apis[current_api].favicon }}">
 							{{ apis[current_api].name }}
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right">
 							<li ng-repeat="(k, v) in apis"><a ng-click="setAPI(k)">
-								<img ng-src="{{ v.base_url + '/favicon.ico' }}">
+								<img ng-hide="v.favicon" ng-src="{{ v.base_url + '/favicon.ico' }}">
+								<img ng-show="v.favicon" ng-src="{{ v.favicon }}">
 								{{ v.name }}
 							</a></li>
 						</ul>

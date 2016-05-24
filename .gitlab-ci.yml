@@ -9,4 +9,6 @@ build:
     - zip -q -r nbb-darwin-x64.zip nbb-darwin-x64/*
   artifacts:
     paths:
-      - *.zip
+      - nbb-linux-x64.zip
+      - nbb-win32-x64.zip
+      - nbb-darwin-x64.zip

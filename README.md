@@ -1,17 +1,17 @@
 # nbb
 
-A cross-platform booru browser, written in HTML/CSS/JS and built with [http://electron.atom.io/](Electron).
+A cross-platform booru browser, written in HTML/CSS/JS and built with [Electron](https://electron.atom.io/).
 
 Releases at: [https://files.kuudere.moe/nbb/](https://files.kuudere.moe/nbb/)
 
-## supported boorus
+## Supported Boorus
 
-* danbooru
-* safebooru
-* gelbooru
+* Danbooru
+* Safebooru
+* Gelbooru
 * yande.re
 
-## planned enhancements
+## Planned Enhancements
 
 * mouse scrolling through previews
 * image grabbing

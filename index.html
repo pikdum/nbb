@@ -19,6 +19,9 @@
 	</head>
 	<body>
 		<nav class="navbar navbar-default" style="-webkit-app-region: drag">
+			<ul class="nav nav-tabs" role="tablist">
+				<li ng-click="vm.switchTab(vm.tabs.indexOf(tab))" ng-class="{active: vm.i == vm.tabs.indexOf(tab)}" data-toggle="tab" ng-repeat="tab in vm.tabs"><a>{{ tab.tags == "" ? "New Tab" : tab.tags }}</a></li>
+			</ul>
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -73,6 +76,15 @@
 								<span class="glyphicon glyphicon-save"></span>
 							</a>
 						</li>
+						<li>
+							<a ng-click="vm.show_tags = !vm.show_tags"><span class="glyphicon glyphicon-tags"></span></a>
+						</li>
+						<li>
+							<a ng-click="vm.newTab()"><span class="glyphicon glyphicon-plus"></span></a>
+						</li>
+						<li>
+							<a ng-click="vm.closeTab(vm.i)"><span class="glyphicon glyphicon-remove"></span></a>
+						</li>
 					</ul>
 					
 				</div>
@@ -86,7 +98,7 @@
 			</a>
 		</div>
 		
-		<ul id="tag-list" class="list-group">
+		<ul ng-hide="!vm.show_tags" id="tag-list" class="list-group">
 			<li ng-hide="tag == ''" ng-class="{active: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="list-group-item" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">{{ tag }}</li>
 		</ul>
 	

@@ -20,6 +20,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	vm.i = 0;
 	vm.preloadCount = 3;
+	vm.show_tags = false;
 
 	vm.tabs = [];
 	vm.new_tab = function() {
@@ -37,13 +38,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 	vm.tabs[0] = vm.new_tab();
 	console.log(vm.tabs[0]);
-
-	vm.switch_tab = function(x) {
-		if (vm.tabs[x] === undefined) {
-			vm.tabs[x] = vm.new_tab();
-		}
-		vm.i = x;
-	}
 
 	vm.IMAGE_TYPES = ["jpg", "png", "gif", "jpeg"];
 	vm.VIDEO_TYPES = ["webm", "mp4"];
@@ -188,6 +182,10 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	vm.setActive = function(index) {
+		if (vm.tabs[vm.i].data[index] === undefined) {
+			console.log("[DEBUG] Data is undefined. Ignoring.");
+			return;
+		}
 		vm.tabs[vm.i].index = index;
 		console.log("[DEBUG] index: " + vm.tabs[vm.i].index);
 		$(".selected").removeClass("selected");
@@ -261,6 +259,30 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		vm.queryAPI(vm.tabs[vm.i].api);
 	}
 
+	vm.closeTab = function(i) {
+		if (vm.tabs.length == 1) {
+			console.log("[DEBUG]: Trying to close last tab. Ignoring.");
+			return;
+		}
+		if (vm.i == i && i == vm.tabs.length - 1) {
+			vm.switchTab(i - 1);
+		}
+		vm.tabs.splice(i, 1);
+	}
+
+	vm.switchTab = function(i) {
+		vm.i = i;
+		$("#image").remove();
+		$("#video").remove();
+		vm.setActive(vm.tabs[vm.i].index);
+		$('#tag-input').focus();
+	}
+
+	vm.newTab = function() {
+		vm.tabs.push(vm.new_tab());
+		vm.switchTab(vm.tabs.length - 1);
+	}
+
 	var height = $('#search').outerHeight(true) + $('#pagination').outerHeight(true);
 	$('#preview_list').css({ 'max-height': 'calc(100% - ' + height + 'px - 10px)' });
 	var height = $('#booru-button').outerHeight(true) + $('#buttons').outerHeight(true);
@@ -268,6 +290,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	$(document).keydown(function(e) {
 		$scope.$apply(function() {
+			console.log(e.which);
 			switch(e.which) {
 				// up
 				case 38:

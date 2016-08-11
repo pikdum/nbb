@@ -268,6 +268,9 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			vm.switchTab(i - 1);
 		}
 		vm.tabs.splice(i, 1);
+		if (vm.i == i) {
+			vm.switchTab(vm.i);
+		}
 	}
 
 	vm.switchTab = function(i) {

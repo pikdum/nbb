@@ -8,27 +8,47 @@ function toggleFit(e) {
 	}
 }
 
-app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
-	$scope.title = "nbb";
-	$scope.page = 1;
-	$scope.tags = "";
-	$scope.data = [];
-	$scope.loading = false;
-	$scope.index = -1;
-	$scope.current_api = "danbooru (sfw)";
-	$scope.maximized = false;
-	$scope.preloadCount = 3;
+var tabs = [];
 
+app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
+	var vm = this;
 	new Clipboard('.clipboard');
-	
 	toastr.options = {
 		"positionClass": "toast-bottom-right"
 	}
+	$('#tag-input').focus();
 
-	$scope.IMAGE_TYPES = ["jpg", "png", "gif", "jpeg"];
-	$scope.VIDEO_TYPES = ["webm", "mp4"];
+	vm.i = 0;
+	vm.preloadCount = 3;
 
-	$scope.apis = {
+	vm.tabs = [];
+	vm.new_tab = function() {
+		d = {
+			title: "nbb",
+			page: "1",
+			tags: "",
+			data: [],
+			loading: false,
+			index: -1,
+			current_api: "danbooru (sfw)",
+			maximized: false
+		}
+		return d;
+	}
+	vm.tabs[0] = vm.new_tab();
+	console.log(vm.tabs[0]);
+
+	vm.switch_tab = function(x) {
+		if (vm.tabs[x] === undefined) {
+			vm.tabs[x] = vm.new_tab();
+		}
+		vm.i = x;
+	}
+
+	vm.IMAGE_TYPES = ["jpg", "png", "gif", "jpeg"];
+	vm.VIDEO_TYPES = ["webm", "mp4"];
+
+	vm.apis = {
 		"safebooru": {
 			"name": "Safebooru",
 			"base_url": "http://safebooru.org",
@@ -67,45 +87,56 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}
 	}
 
-	$('#tag-input').focus();
 
-	$scope.setAPI = function(api) {
-		$scope.current_api = api;
+	vm.setAPI = function(api) {
+		vm.tabs[vm.i].current_api = api;
 	}
 
-	$scope.newQuery = function(api) {
-		$scope.page = 1;
-		$scope.queryAPI(api);
+	function newQuery(api) {
+		if (api === undefined) {
+			console.log("[DEBUG]: api for newQuery is undefined.");
+			return;
+		}
+		console.log(api);
+		vm.tabs[vm.i].page = 1;
+		vm.queryAPI(api);
 	}
 
-	$scope.queryAPI = function(api) {
-		$scope.tags = $scope.tags.toLowerCase();
-		$scope.api = api;
-		$scope.index = -1;
-		$scope.loading = true;
-		var api_data = $scope.apis[api];
+	vm.newQuery = newQuery;
+
+	vm.queryAPI = function(api) {
+		console.log(api);
+		vm.tabs[vm.i].tags = vm.tabs[vm.i].tags.toLowerCase();
+		vm.tabs[vm.i].api = api;
+		vm.tabs[vm.i].index = -1;
+		vm.tabs[vm.i].loading = true;
+		var api_data = vm.apis[api];
+		console.log(api_data);
 		var url = api_data.api;
-		$scope.base_url = api_data.base_url;
-		$scope.title = $scope.apis[$scope.api].name + " - " + $scope.tags + " - " + "Page " + $scope.page;
+		console.log(url);
+		vm.tabs[vm.i].base_url = api_data.base_url;
+		console.log(api_data.base_url);
+		vm.tabs[vm.i].title = vm.apis[vm.tabs[vm.i].api].name + " - " + vm.tabs[vm.i].tags + " - " + "Page " + vm.tabs[vm.i].page;
+		console.log('a');
 		if (api_data.api_type == "json") {
 			var options = {
 				limit: '100',
-				page: $scope.page,
-				tags: $scope.tags
+				page: vm.tabs[vm.i].page,
+				tags: vm.tabs[vm.i].tags
 			};
 			$http.get(url, {params: options}).
 				success(function(data) {
-					$scope.data = data;
-					$scope.data = $scope.data.filter(function(v) {
+					vm.tabs[vm.i].data = data;
+					vm.tabs[vm.i].data = vm.tabs[vm.i].data.filter(function(v) {
 						return v.file_url;
 					});
-					$scope.loading = false;
+					vm.tabs[vm.i].loading = false;
 					setTimeout(function() {
 						$("#preview_list").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
-					$scope.loading = false;
+					vm.tabs[vm.i].loading = false;
 				});
 		} else if (api_data.api_type == "xml") {
 			var options = {
@@ -113,40 +144,40 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				s: 'post',
 				q: 'index',
 				limit: '100',
-				pid: $scope.page - 1,
-				tags: $scope.tags
+				pid: vm.tabs[vm.i].page - 1,
+				tags: vm.tabs[vm.i].tags
 			};
 			$http.get(url, {params: options}).
 				success(function(data) {
 					var x2js = new X2JS();
 					var posts = x2js.xml_str2json(data)['posts']['post'];
-					$scope.data = [];
+					vm.tabs[vm.i].data = [];
 					for (var i = 0; i < posts.length; i++) {
 						var e = {};
 						e.preview_url = posts[i]._preview_url;
 						e.file_url = posts[i]._file_url;
 						e.tag_string = posts[i]._tags;
 						e.id = posts[i]._id;
-						$scope.data.push(e);
+						vm.tabs[vm.i].data.push(e);
 					}
-					$scope.loading = false;
+					vm.tabs[vm.i].loading = false;
 					setTimeout(function() {
 						$("#preview_list").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
-					$scope.loading = false;
+					vm.tabs[vm.i].loading = false;
 				});
 		}
 	}
 
-	$scope.copyURL = function() {
-		window.prompt("Copy to clipboard: Ctrl+C, Enter", $scope.src);
+	vm.copyURL = function() {
+		window.prompt("Copy to clipboard: Ctrl+C, Enter", vm.tabs[vm.i].src);
 	}
 
-	$scope.toggleFullscreen = function() {
-		$scope.maximized = !$scope.maximized;
-		if ($scope.maximized) {
+	vm.toggleFullscreen = function() {
+		vm.tabs[vm.i].maximized = !vm.tabs[vm.i].maximized;
+		if (vm.tabs[vm.i].maximized) {
 			$('#parent').removeClass('col-xs-6');
 			$('#parent').removeClass('col-lg-8');
 			$('#parent').addClass('col-xs-12');
@@ -156,13 +187,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}
 	}
 
-	$scope.setActive = function(index) {
-		$scope.index = index;
-		console.log("[DEBUG] index: " + $scope.index);
+	vm.setActive = function(index) {
+		vm.tabs[vm.i].index = index;
+		console.log("[DEBUG] index: " + vm.tabs[vm.i].index);
 		$(".selected").removeClass("selected");
-		$scope.active = $scope.data[index];
+		vm.tabs[vm.i].active = vm.tabs[vm.i].data[index];
 		console.log("[DEBUG] active:");
-		console.log($scope.active);
+		console.log(vm.tabs[vm.i].active);
 		$(".preview").eq(index).parent().addClass("selected");
 		$("#image").remove();
 		$("#video").remove();
@@ -172,17 +203,17 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				offset: 0 - $(window).width() / 3
 			});
 		}, 100);
-		var file_url = $scope.active.file_url;
+		var file_url = vm.tabs[vm.i].active.file_url;
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-				file_url : $scope.base_url + file_url;
-		$scope.src = src;
-		console.log("[DEBUG] src: " + $scope.src);
+				file_url : vm.tabs[vm.i].base_url + file_url;
+		vm.tabs[vm.i].src = src;
+		console.log("[DEBUG] src: " + vm.tabs[vm.i].src);
 		var ext = src.split('.').slice(-1)[0];
-		if ($scope.IMAGE_TYPES.indexOf(ext) >= 0) {
+		if (vm.IMAGE_TYPES.indexOf(ext) >= 0) {
 			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
 			img.attr('src', src);
 			img.appendTo("#parent");
-		} else if ($scope.VIDEO_TYPES.indexOf(ext) >= 0) {
+		} else if (vm.VIDEO_TYPES.indexOf(ext) >= 0) {
 			var video = $('<video>', {
 				id: 'video',
 				class: 'fluid',
@@ -192,42 +223,42 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 			video.appendTo("#parent");
 		}
-		$scope.preload();
+		vm.preload();
 	}
 
-	$scope.preload = function() {
+	vm.preload = function() {
 		var images = new Array();
-		for (var i = 0; i < $scope.preloadCount; i++) {
-			var file_url = $scope.data[$scope.index + i].file_url;
+		for (var i = 0; i < vm.preloadCount; i++) {
+			var file_url = vm.tabs[vm.i].data[vm.tabs[vm.i].index + i].file_url;
 			var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-				file_url : $scope.base_url + file_url;
+				file_url : vm.tabs[vm.i].base_url + file_url;
 			images[i] = new Image();
 			images[i].src = src;
 		}
 	}
 
-	$scope.addRemoveTag = function(tag) {
+	vm.addRemoveTag = function(tag) {
 		var tag = tag.toLowerCase();
-		var split = $scope.tags.split(' ');
+		var split = vm.tabs[vm.i].tags.split(' ');
 		var index = split.indexOf(tag);
 		if (index > -1) {
 			split.splice(index, 1);
 		} else {
 			split.push(tag);
 		}
-		$scope.tags = split.join(" ");
+		vm.tabs[vm.i].tags = split.join(" ");
 	}
 
-	$scope.incPage = function(v) {
-		if ($scope.page == 1 && !v) {
+	vm.incPage = function(v) {
+		if (vm.tabs[vm.i].page == 1 && !v) {
 			return;
 		}
 		if (v) {
-			$scope.page = $scope.page + 1;
+			vm.tabs[vm.i].page = vm.tabs[vm.i].page + 1;
 		} else {
-			$scope.page = $scope.page = 1;
+			vm.tabs[vm.i].page = vm.tabs[vm.i].page - 1;
 		}
-		$scope.queryAPI($scope.api);
+		vm.queryAPI(vm.tabs[vm.i].api);
 	}
 
 	var height = $('#search').outerHeight(true) + $('#pagination').outerHeight(true);
@@ -240,29 +271,29 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			switch(e.which) {
 				// up
 				case 38:
-					$scope.incPage(1);
+					vm.incPage(1);
 					break;
 				// down
 				case 40:
-					$scope.incPage(0);		
+					vm.incPage(0);		
 					break;
 				// enter
 				case 13:
-					$scope.newQuery($scope.current_api);
+					vm.newQuery(vm.tabs[vm.i].current_api);
 					break;
 				// left
 				case 37:
-					if ($scope.index > 0) {
-						$scope.index = $scope.index - 1;
-						$scope.setActive($scope.index);
+					if (vm.tabs[vm.i].index > 0) {
+						vm.tabs[vm.i].index = vm.tabs[vm.i].index - 1;
+						vm.setActive(vm.tabs[vm.i].index);
 					}
 					break;
 				// right
 				case 39:
-					if ($scope.index < $scope.data.length - 1 &&
-						$scope.data.length > 0) {
-						$scope.index = $scope.index + 1;
-						$scope.setActive($scope.index);
+					if (vm.tabs[vm.i].index < vm.tabs[vm.i].data.length - 1 &&
+						vm.tabs[vm.i].data.length > 0) {
+						vm.tabs[vm.i].index = vm.tabs[vm.i].index + 1;
+						vm.setActive(vm.tabs[vm.i].index);
 					}
 					break;
 				// esc

@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
-<html lang="en" ng-app="app" ng-controller="appCtrl">
+<html lang="en" ng-app="app" ng-controller="appCtrl as vm">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no">
 		<meta name="referrer" content="no-referrer">
-		<title>{{ title }}</title>
+		<title>{{ vm.tabs[vm.i].title }}</title>
 		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="static/toastr.min.css">
@@ -29,18 +29,18 @@
 				</div>
 				
 				<div class="collapse navbar-collapse" id="navbar-collapse">
-					<form class="navbar-form navbar-left nomargin" role="search" ng-submit="newQuery(current_api)">
+					<form class="navbar-form navbar-left nomargin" role="search" ng-submit="vm.newQuery(vm.tabs[vm.i].current_api)">
 						<div class="form-group" style="-webkit-app-region: no-drag">
-						<input autocomplete="off" id="tag-input" ng-model="tags" type="text" class="form-control" placeholder="Tags">
+						<input autocomplete="off" id="tag-input" ng-model="vm.tabs[vm.i].tags" type="text" class="form-control" placeholder="Tags">
 						</div>
 						<div class="btn-group navbar-btn">
 						<button id="booru-button" type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
-							<img ng-hide="apis[current_api].favicon" ng-src="{{ apis[current_api].base_url + '/favicon.ico' }}">
-							<img ng-show="apis[current_api].favicon" ng-src="{{ apis[current_api].favicon }}">
-							{{ apis[current_api].name }}
+							<img ng-hide="vm.apis[vm.tabs[vm.i].current_api].favicon" ng-src="{{ vm.apis[vm.tabs[vm.i].current_api].base_url + '/favicon.ico' }}">
+							<img ng-show="vm.apis[vm.tabs[vm.i].current_api].favicon" ng-src="{{ vm.apis[vm.tabs[vm.i].current_api].favicon }}">
+							{{ vm.apis[vm.tabs[vm.i].current_api].name }}
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right">
-							<li ng-repeat="(k, v) in apis"><a ng-click="setAPI(k)">
+							<li ng-repeat="(k, v) in vm.apis"><a ng-click="vm.setAPI(k)">
 								<img ng-hide="v.favicon" ng-src="{{ v.base_url + '/favicon.ico' }}">
 								<img ng-show="v.favicon" ng-src="{{ v.favicon }}">
 								{{ v.name }}
@@ -52,9 +52,9 @@
 						</button>
 						
 						
-				<a class="btn btn-default" ng-click="incPage(0)">&laquo;</a>
-				<a class="btn btn-default">Page {{ page }}</a>
-				<a class="btn btn-default" ng-click="incPage(1)">&raquo;</a>
+				<a class="btn btn-default" ng-click="vm.incPage(0)">&laquo;</a>
+				<a class="btn btn-default">Page {{ vm.tabs[vm.i].page }}</a>
+				<a class="btn btn-default" ng-click="vm.incPage(1)">&raquo;</a>
 						
 					</form>
 					
@@ -63,13 +63,13 @@
 							<span class="glyphicon glyphicon-refresh"></span>
 						</a></li>
 						<li>
-							<input id="page_url" type="text" ng-value="apis[api].page_url + active.id">
+							<input id="page_url" type="text" ng-value="vm.apis[vm.tabs[vm.i].api].page_url + vm.tabs[vm.i].active.id">
 							<a onclick="toastr.success('Page URL copied!');" class="clipboard" data-clipboard-target="#page_url">
 								<span class="glyphicon glyphicon-link"></span>
 							</a>
 						</li>
 						<li>
-							<a download ng-href="{{ src }}">
+							<a download ng-href="{{ vm.tabs[vm.i].src }}">
 								<span class="glyphicon glyphicon-save"></span>
 							</a>
 						</li>
@@ -80,22 +80,22 @@
 			</div>
 		</nav>
 		
-		<div id="preview_list" class="horizontal-scroll" ng-class="{show: index == -1}">
-			<a ng-repeat="entry in data">
-				<img class="preview" ng-src="{{ entry.preview_url ? entry.preview_url : base_url + entry.preview_file_url }}" ng-click="setActive(data.indexOf(entry))">
+		<div id="preview_list" class="horizontal-scroll" ng-class="{show: vm.tabs[vm.i].index == -1}">
+			<a ng-repeat="entry in vm.tabs[vm.i].data">
+				<img class="preview" ng-src="{{ entry.preview_url ? entry.preview_url : vm.tabs[vm.i].base_url + entry.preview_file_url }}" ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))">
 			</a>
 		</div>
 		
 		<ul id="tag-list" class="list-group">
-			<li ng-hide="tag == ''" ng-class="{active: tags.split(' ').indexOf(tag) > -1}" class="list-group-item" ng-repeat="tag in active.tag_string ? active.tag_string.split(' ') : active.tags.split(' ') track by $index" ng-click="addRemoveTag(tag)">{{ tag }}</li>
+			<li ng-hide="tag == ''" ng-class="{active: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="list-group-item" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">{{ tag }}</li>
 		</ul>
 	
 		<div class="max-height center" id="parent">
-			<div ng-show="!active" style="text-align: left;">
+			<div ng-show="!vm.tabs[vm.i].active" style="text-align: left;">
 				<div class="container">
 					<h1>Quick Start</h1>
 					<ol>
-						<li>Type a tag into the search bar at the top, such as "<a ng-click="tags = 'landscape'">landscape</a>".</li>
+						<li>Type a tag into the search bar at the top, such as "<a ng-click="vm.tabs[vm.i].tags = 'landscape'">landscape</a>".</li>
 						<li>Press the blue search button or the enter key.</li>
 						<li>Image previews are on the bottom of the page.</li>
 						<li>Cycle through images by clicking on them or with the left and right arrow keys.</li>

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+mkdir -p build
 cp img/icon.png build/
 cd build
 cp icon.png 1024x1024.png

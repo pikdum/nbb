@@ -1,3 +1,9 @@
+if(require('electron-squirrel-startup')) return;
+const autoUpdater = require('electron').autoUpdater;
+const os = require('os');
+const feedURL = 'https://files.kuudere.moe/nbb/latest/win' + (os.arch() === 'x64' ? '64' : '32');
+autoUpdater.setFeedURL(feedURL);
+autoUpdater.checkForUpdates();
 const {app, BrowserWindow} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -9,6 +15,7 @@ function createWindow () {
   win = new BrowserWindow({
 	width: 900,
 	height: 700,
+	icon: "img/icon.png",
 	webPreferences: {
 		nodeIntegration: false
 	}})

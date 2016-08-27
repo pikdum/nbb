@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cp images/icon.png build/
+cp img/icon.png build/
 cd build
 cp icon.png 1024x1024.png
 convert icon.png -define icon:auto-resize=256,128,64,48,32,16 logo.ico

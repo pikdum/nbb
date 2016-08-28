@@ -3,7 +3,7 @@ mkdir -p build
 cp img/icon.png build/
 cd build
 cp icon.png 1024x1024.png
-convert icon.png -define icon:auto-resize=256,128,64,48,32,16 logo.ico
+convert icon.png -define icon:auto-resize=256,128,64,48,32,16 icon.ico
 for i in 512 256 128 32 16; do
 	convert 1024x1024.png -resize ${i}x${i} ${i}x${i}.png
 done

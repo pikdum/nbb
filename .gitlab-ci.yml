@@ -18,7 +18,7 @@ build:
 deploy:
   stage: deploy
   script:
-  - cp dist/win/* /var/www/files/nbb/win/
+  - cp dist/win/* /var/www/files/nbb/win64/
   - cp dist/*.AppImage /var/www/files/nbb/linux/
   tags:
   - shell

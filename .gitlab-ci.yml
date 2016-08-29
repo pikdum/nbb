@@ -11,5 +11,6 @@ build:
     paths:
     - dist/win/*      
     - dist/*.AppImage
+    expire_in: 1 week
   tags:
   - docker

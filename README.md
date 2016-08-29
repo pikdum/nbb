@@ -1,4 +1,5 @@
 # nbb
+[![build status](https://git.kuudere.moe/pikdum/nbb/badges/master/build.svg)](https://git.kuudere.moe/pikdum/nbb/commits/master)
 
 A cross-platform booru browser, written in HTML/CSS/JS and built with [Electron](https://electron.atom.io/).
 

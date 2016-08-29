@@ -14,3 +14,11 @@ build:
     expire_in: 1 week
   tags:
   - docker
+
+deploy:
+  stage: deploy
+  script:
+  - cp dist/win/* /var/www/files/nbb/win/
+  - cp dist/*.AppImage /var/www/files/nbb/linux/
+  tags:
+  - shell

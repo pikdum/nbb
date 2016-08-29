@@ -3,11 +3,11 @@
   "productName": "nbb",
   "version": "1.0.1",
   "author": "pikdum <pikdum@openmailbox.org>",
-  "description": "A booru browser written in js.",
+  "description": "Node.js Booru Browser",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "dist": "build --linux AppImage tar.xz --windows --x64"
+    "dist": "sh icons.sh && build --linux AppImage --windows --x64 && cp build/icon.ico dist/win/"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,15 @@
+stages:
+- build
+- deploy
+
+build:
+  stage: build
+  script:
+  - npm install
+  - npm run dist
+  artifacts:
+    paths:
+    - dist/win/*      
+    - dist/*.AppImage
+  tags:
+  - docker

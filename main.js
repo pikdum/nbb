@@ -1,7 +1,6 @@
 if(require('electron-squirrel-startup')) return;
 const autoUpdater = require('electron').autoUpdater;
-const os = require('os');
-const feedURL = 'https://files.kuudere.moe/nbb/latest/win' + (os.arch() === 'x64' ? '64' : '32');
+const feedURL = 'https://files.kuudere.moe/nbb/win64';
 autoUpdater.setFeedURL(feedURL);
 autoUpdater.checkForUpdates();
 const {app, BrowserWindow} = require('electron')

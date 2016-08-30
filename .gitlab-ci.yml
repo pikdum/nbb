@@ -22,3 +22,5 @@ deploy:
   - cp dist/*.AppImage /var/www/files/nbb/linux/
   tags:
   - shell
+  only:
+  - master

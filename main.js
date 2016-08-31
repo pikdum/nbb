@@ -19,7 +19,7 @@ function createWindow () {
 	height: 700,
 	icon: "img/icon.png",
 	webPreferences: {
-		nodeIntegration: false
+		nodeIntegration: true
 	}})
 
   // and load the index.html of the app.

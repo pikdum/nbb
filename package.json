@@ -1,7 +1,7 @@
 {
   "name": "nbb",
   "productName": "nbb",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "author": "pikdum <pikdum@openmailbox.org>",
   "description": "Node.js Booru Browser",
   "main": "main.js",

@@ -39,3 +39,5 @@ deploy:
   password:
     secure: 8is1tNTxr7d7AFNggYy8OQ==
   folder: /var/www/files/
+  on:
+    branch: master

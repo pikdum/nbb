@@ -23,7 +23,6 @@ build_script:
 - node --version
 - npm --version
 - npm run build:windows
-- tree
 
 artifacts:
 - path: 'dist\win\*'
@@ -40,4 +39,4 @@ deploy:
     secure: 8is1tNTxr7d7AFNggYy8OQ==
   folder: /
   on:
-    branch: develop
+    branch: master

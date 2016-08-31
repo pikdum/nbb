@@ -1,4 +1,5 @@
 var app = angular.module('app', []);
+const {ipcRenderer} = require('electron');
 
 function toggleFit(e) {
 	if ($(e).hasClass('fluid')) {
@@ -10,6 +11,8 @@ function toggleFit(e) {
 
 var tabs = [];
 
+var test;
+
 app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	var vm = this;
 	new Clipboard('.clipboard');
@@ -17,6 +20,16 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		"positionClass": "toast-bottom-right"
 	}
 	$('#tag-input').focus();
+
+	vm.appVersion = "";
+	ipcRenderer.on('appVersion', function(event, arg) {
+		$scope.$apply(function() {
+			vm.appVersion = arg;
+			console.log(arg);
+		});
+	});
+
+	ipcRenderer.send('ping');
 
 	vm.i = 0;
 	vm.preloadCount = 3;

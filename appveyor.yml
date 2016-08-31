@@ -38,6 +38,6 @@ deploy:
   username: pikdum
   password:
     secure: 8is1tNTxr7d7AFNggYy8OQ==
-  folder: /var/www/files/
+  folder: /
   on:
     branch: master

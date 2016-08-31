@@ -23,3 +23,5 @@ build_script:
 - node --version
 - npm --version
 - npm run dist
+
+test: off

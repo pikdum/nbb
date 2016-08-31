@@ -28,7 +28,8 @@
     "appId": "moe.kuudere.nbb",
     "app-category-type": "moe.kuudere.nbb",
     "win": {
-      "iconUrl": "https://files.kuudere.moe/nbb/icon.ico"
+      "iconUrl": "https://files.kuudere.moe/nbb/icon.ico",
+      "remoteReleases": "https://files.kuudere.moe/nbb/win64/"
     },
     "mac": {
       "icon": "build/icon.icns"

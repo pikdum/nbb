@@ -40,4 +40,4 @@ deploy:
     secure: 8is1tNTxr7d7AFNggYy8OQ==
   folder: /
   on:
-    branch: master
+    branch: develop

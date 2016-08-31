@@ -7,7 +7,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "dist": "sh icons.sh && build --linux AppImage --windows --x64 && cp build/icon.ico dist/win/"
+    "build:linux": "build && cp build/icon.ico dist/"
   },
   "repository": {
     "type": "git",

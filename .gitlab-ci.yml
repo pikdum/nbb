@@ -6,10 +6,10 @@ build:
   stage: build
   script:
   - npm install
-  - npm run dist
+  - npm run build:linux
   artifacts:
     paths:
-    - dist/win/*      
+    - dist/*.ico
     - dist/*.AppImage
     expire_in: 1 week
   tags:
@@ -18,7 +18,7 @@ build:
 deploy:
   stage: deploy
   script:
-  - cp dist/win/* /var/www/files/nbb/win64/
+  - cp dist/*.ico /var/www/files/nbb/win64/win64/
   - cp dist/*.AppImage /var/www/files/nbb/linux/
   tags:
   - shell

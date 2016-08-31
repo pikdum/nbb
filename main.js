@@ -1,8 +1,8 @@
-if(require('electron-squirrel-startup')) return;
-const autoUpdater = require('electron').autoUpdater;
-const feedURL = 'https://files.kuudere.moe/nbb/win64';
-autoUpdater.setFeedURL(feedURL);
 try {
+	if(require('electron-squirrel-startup')) return;
+	const autoUpdater = require('electron').autoUpdater;
+	const feedURL = 'https://files.kuudere.moe/nbb/win64';
+	autoUpdater.setFeedURL(feedURL);
 	autoUpdater.checkForUpdates();
 } catch(e) {
 	//ignore

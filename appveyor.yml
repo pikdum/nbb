@@ -22,7 +22,7 @@ install:
 build_script:
 - node --version
 - npm --version
-- npm run build
+- npm run build:windows
 - tree
 
 artifacts:
@@ -30,3 +30,12 @@ artifacts:
   name: nbb
 
 test: off
+
+deploy:
+- provider: FTP
+  protocol: sftp
+  host: kuudere.moe
+  username: pikdum
+  password:
+    secure: 8is1tNTxr7d7AFNggYy8OQ==
+  folder: /var/www/files/

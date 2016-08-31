@@ -9,7 +9,7 @@
   "scripts": {
     "start": "electron main.js",
     "build:linux": "build && cp build/icon.ico dist/",
-    "build": "build"
+    "build:windows": "build --win --x64"
   },
   "repository": {
     "type": "git",

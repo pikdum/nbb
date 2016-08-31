@@ -1,13 +1,15 @@
 {
   "name": "nbb",
   "productName": "nbb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "pikdum <pikdum@openmailbox.org>",
   "description": "Node.js Booru Browser",
+  "license": "MIT",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "dist": "sh icons.sh && build --linux AppImage --windows --x64 && cp build/icon.ico dist/win/"
+    "build:linux": "build && cp build/icon.ico dist/",
+    "build:windows": "build --win --x64"
   },
   "repository": {
     "type": "git",
@@ -28,7 +30,8 @@
     "appId": "moe.kuudere.nbb",
     "app-category-type": "moe.kuudere.nbb",
     "win": {
-      "iconUrl": "https://files.kuudere.moe/nbb/icon.ico"
+      "iconUrl": "https://files.kuudere.moe/nbb/icon.ico",
+      "remoteReleases": "https://files.kuudere.moe/nbb/win64/"
     },
     "mac": {
       "icon": "build/icon.icns"

@@ -1,0 +1,42 @@
+version: 1.0.{build}
+
+platform:
+- x64
+
+cache:
+- node_modules
+- '%APPDATA%\npm-cache'
+- '%USERPROFILE%\.electron'
+
+init:
+- git config --global core.autocrlf input
+
+install:
+- ps: Install-Product node 6 x64
+- git reset --hard HEAD
+- npm install npm -g
+- npm install electron-builder@next
+- npm install
+- npm prune
+
+build_script:
+- node --version
+- npm --version
+- npm run build:windows
+
+artifacts:
+- path: 'dist\win\*'
+  name: nbb
+
+test: off
+
+deploy:
+- provider: FTP
+  protocol: sftp
+  host: kuudere.moe
+  username: pikdum
+  password:
+    secure: 8is1tNTxr7d7AFNggYy8OQ==
+  folder: /
+  on:
+    branch: master

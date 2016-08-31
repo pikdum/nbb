@@ -1,12 +1,11 @@
-try {
-	if(require('electron-squirrel-startup')) return;
-	const autoUpdater = require('electron').autoUpdater;
-	const feedURL = 'https://files.kuudere.moe/nbb/win64';
-	autoUpdater.setFeedURL(feedURL);
-	autoUpdater.checkForUpdates();
-} catch(e) {
-	//ignore
-}
+if(require('electron-squirrel-startup')) return;
+const autoUpdater = require('electron').autoUpdater;
+const feedURL = 'https://files.kuudere.moe/nbb/win64';
+autoUpdater.setFeedURL(feedURL);
+autoUpdater.on('error', function(err) {
+	console.log(err);
+});
+autoUpdater.checkForUpdates();
 const {app, BrowserWindow} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will

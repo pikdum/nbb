@@ -26,7 +26,7 @@ build_script:
 - tree
 
 artifacts:
-- path: 'dist\win64\*'
+- path: 'dist\win\*'
   name: nbb
 
 test: off

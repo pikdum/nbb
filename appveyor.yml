@@ -23,5 +23,10 @@ build_script:
 - node --version
 - npm --version
 - npm run build
+- tree
+
+artifacts:
+- path: 'dist\win64\*'
+  name: nbb
 
 test: off

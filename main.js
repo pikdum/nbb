@@ -1,20 +1,39 @@
 if(require('electron-squirrel-startup')) return;
+const {app, BrowserWindow} = require('electron');
+const {ipcMain} = require('electron');
 const autoUpdater = require('electron').autoUpdater;
+
+let win;
+var updateStatus = "";
 const feedURL = 'https://files.kuudere.moe/nbb/win64';
 autoUpdater.setFeedURL(feedURL);
 autoUpdater.on('error', function(err) {
   console.log(err);
 });
+autoUpdater.on('checking-for-update', function() {
+  updateStatus = "checking-for-update";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-available', function() {
+  updateStatus = "update-available";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-not-available', function() {
+  updateStatus = "update-not-available";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-downloaded', function() {
+  updateStatus = "update-downloaded";
+  event.sender.send('updateStatus', updateStatus);
+});
 autoUpdater.checkForUpdates();
-const {app, BrowserWindow} = require('electron')
-const {ipcMain} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
 
 ipcMain.on('ping', function(event, arg) {
   event.sender.send('appVersion', app.getVersion());
+  event.sender.send('updateStatus', updateStatus);
 })
 
 function createWindow () {

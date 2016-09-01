@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no">
 		<meta name="referrer" content="no-referrer">
-		<title>{{ vm.tabs[vm.i].title }}</title>
+		<title>nbb v{{ vm.appVersion}} {{ vm.tabs[vm.i].title }}</title>
 		<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="static/toastr.min.css">
@@ -118,7 +118,11 @@
 						<li>Click on the tag icon to view the current image's tags. Add/remove tags to the search bar by clicking on them.</li>
 						<li>The booru can be changed by clicking on the button and selecting a different one. Press enter to use the newly selected booru.</li>
 					</ol>
-					<p>v{{ vm.appVersion }}</p>
+					<div style="text-align: center;">
+						<h3 ng-show="vm.updateStatus == 'update-available'">Updating...</h3>
+						<h3 ng-show="vm.updateStatus == 'update-not-available'">nbb is up to date.</h3>
+						<h3 ng-show="vm.updateStatus == 'update-downloaded'">Relaunch nbb to finish updating.</h3>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -29,6 +29,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		});
 	});
 
+	ipcRenderer.on('updateStatus', function(event, arg) {
+		$scope.$apply(function() {
+			vm.updateStatus = arg;
+			console.log(arg);
+		});
+	});
+
 	ipcRenderer.send('ping');
 
 	vm.i = 0;
@@ -38,7 +45,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	vm.tabs = [];
 	vm.new_tab = function() {
 		d = {
-			title: "nbb",
+			title: "",
 			page: "1",
 			tags: "",
 			data: [],
@@ -123,7 +130,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		console.log(url);
 		vm.tabs[vm.i].base_url = api_data.base_url;
 		console.log(api_data.base_url);
-		vm.tabs[vm.i].title = vm.apis[vm.tabs[vm.i].api].name + " - " + vm.tabs[vm.i].tags + " - " + "Page " + vm.tabs[vm.i].page;
+		vm.tabs[vm.i].title = "- " + vm.apis[vm.tabs[vm.i].api].name + " - " + vm.tabs[vm.i].tags + " - " + "Page " + vm.tabs[vm.i].page;
 		console.log('a');
 		if (api_data.api_type == "json") {
 			var options = {

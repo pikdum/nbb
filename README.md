@@ -1,5 +1,5 @@
 # nbb
-[![build status](https://git.kuudere.moe/pikdum/nbb/badges/master/build.svg)](https://git.kuudere.moe/pikdum/nbb/commits/master)
+[![build status](https://git.kuudere.moe/pikdum/nbb/badges/develop/build.svg)](https://git.kuudere.moe/pikdum/nbb/commits/develop)
 [![Build status](https://ci.appveyor.com/api/projects/status/sigqlsry9q597dgt?svg=true)](https://ci.appveyor.com/project/pikdum/nbb)
 
 

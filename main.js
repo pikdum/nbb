@@ -1,16 +1,40 @@
 if(require('electron-squirrel-startup')) return;
+const {app, BrowserWindow} = require('electron');
+const {ipcMain} = require('electron');
 const autoUpdater = require('electron').autoUpdater;
+
+let win;
+var updateStatus = "";
 const feedURL = 'https://files.kuudere.moe/nbb/win64';
 autoUpdater.setFeedURL(feedURL);
 autoUpdater.on('error', function(err) {
-	console.log(err);
+  console.log(err);
+});
+autoUpdater.on('checking-for-update', function() {
+  updateStatus = "checking-for-update";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-available', function() {
+  updateStatus = "update-available";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-not-available', function() {
+  updateStatus = "update-not-available";
+  event.sender.send('updateStatus', updateStatus);
+});
+autoUpdater.on('update-downloaded', function() {
+  updateStatus = "update-downloaded";
+  event.sender.send('updateStatus', updateStatus);
 });
 autoUpdater.checkForUpdates();
-const {app, BrowserWindow} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+
+ipcMain.on('ping', function(event, arg) {
+  event.sender.send('appVersion', app.getVersion());
+  event.sender.send('updateStatus', updateStatus);
+})
 
 function createWindow () {
   // Create the browser window.
@@ -19,11 +43,12 @@ function createWindow () {
 	height: 700,
 	icon: "img/icon.png",
 	webPreferences: {
-		nodeIntegration: false
+		nodeIntegration: true
 	}})
 
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`)
+  
 
   // Open the DevTools.
   //win.webContents.openDevTools()
@@ -40,7 +65,9 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function() {
+  createWindow();
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

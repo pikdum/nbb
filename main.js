@@ -12,21 +12,20 @@ autoUpdater.on('error', function(err) {
 });
 autoUpdater.on('checking-for-update', function() {
   updateStatus = "checking-for-update";
-  event.sender.send('updateStatus', updateStatus);
+  win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-available', function() {
   updateStatus = "update-available";
-  event.sender.send('updateStatus', updateStatus);
+  win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-not-available', function() {
   updateStatus = "update-not-available";
-  event.sender.send('updateStatus', updateStatus);
+  win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-downloaded', function() {
   updateStatus = "update-downloaded";
-  event.sender.send('updateStatus', updateStatus);
+  win.webContents.send('updateStatus', updateStatus);
 });
-autoUpdater.checkForUpdates();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -48,7 +47,8 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/index.html`)
-  
+
+  autoUpdater.checkForUpdates();
 
   // Open the DevTools.
   //win.webContents.openDevTools()

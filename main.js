@@ -46,13 +46,14 @@ switch (process.platform) {
 try {
   console.log(app.getPath('pepperFlashSystemPlugin'));
   flashPath = app.getPath('pepperFlashSystemPlugin');
-  console.log("Using:", flashPath + pluginName);
+  console.log("Using:", flashPath);
 } catch(e) {
   console.log("Could not auto-detect flash.\nUsing:", flashPath + pluginName);
+  flashPath = flashPath + pluginName;
 }
 
 try {
-  app.commandLine.appendSwitch('ppapi-flash-path', flashPath + pluginName);
+  app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
 } catch(e) {
   console.log("No flash found.");
 }

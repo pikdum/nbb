@@ -9,6 +9,24 @@ function toggleFit(e) {
 	}
 }
 
+app.filter('trusted', ['$sce', function ($sce) {
+	return function(url) {
+		return $sce.trustAsResourceUrl(url);
+	};
+}]);
+
+
+app.directive('imageonload', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			element.bind('load', function() {
+				scope.$apply(attrs.imageonload);
+			});
+		}
+	};
+});
+
 var tabs = [];
 
 var test;
@@ -98,6 +116,13 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			"page_url": "https://yande.re/post/show/",
 			"api": "https://yande.re/post.json",
 			"api_type": "json"
+		},
+		"e621": {
+			"name": "e621",
+			"base_url": "https://e621.net",
+			"page_url": "https://e621.net/post/show/",
+			"api": "https://e621.net/post/index.xml",
+			"api_type": "xml"
 		}
 	}
 
@@ -140,6 +165,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			};
 			$http.get(url, {params: options}).
 				success(function(data) {
+					console.log(data);
 					vm.tabs[vm.i].data = data;
 					vm.tabs[vm.i].data = vm.tabs[vm.i].data.filter(function(v) {
 						return v.file_url;
@@ -165,13 +191,22 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				success(function(data) {
 					var x2js = new X2JS();
 					var posts = x2js.xml_str2json(data)['posts']['post'];
+					console.log(data);
+					console.log(posts);
 					vm.tabs[vm.i].data = [];
 					for (var i = 0; i < posts.length; i++) {
 						var e = {};
-						e.preview_url = posts[i]._preview_url;
-						e.file_url = posts[i]._file_url;
-						e.tag_string = posts[i]._tags;
-						e.id = posts[i]._id;
+						if (posts[i]._id) {
+							e.preview_url = posts[i]._preview_url;
+							e.file_url = posts[i]._file_url;
+							e.tag_string = posts[i]._tags;
+							e.id = posts[i]._id;
+						} else {
+							e.preview_url = posts[i].preview_url;
+							e.file_url = posts[i].file_url;
+							e.tag_string = posts[i].tags;
+							e.id = posts[i].id;
+						}
 						vm.tabs[vm.i].data.push(e);
 					}
 					vm.tabs[vm.i].loading = false;
@@ -213,8 +248,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		console.log("[DEBUG] active:");
 		console.log(vm.tabs[vm.i].active);
 		$(".preview").eq(index).parent().addClass("selected");
-		$("#image").remove();
-		$("#video").remove();
+		vm.removeActive();
 		var e = ".preview:eq(" + index + ")";
 		setTimeout(function() {
 			$("#preview_list").scrollTo(e, 100, {
@@ -223,25 +257,25 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}, 100);
 		var file_url = vm.tabs[vm.i].active.file_url;
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-				file_url : vm.tabs[vm.i].base_url + file_url;
+			file_url : vm.tabs[vm.i].base_url + file_url;
 		vm.tabs[vm.i].src = src;
 		console.log("[DEBUG] src: " + vm.tabs[vm.i].src);
 		var ext = src.split('.').slice(-1)[0];
+		console.log(src);
 		if (vm.IMAGE_TYPES.indexOf(ext) >= 0) {
-			var img = $('<img id="image" class="fluid" onclick="toggleFit(this)">');
-			img.attr('src', src);
-			img.appendTo("#parent");
+			vm.img_src = src;
 		} else if (vm.VIDEO_TYPES.indexOf(ext) >= 0) {
-			var video = $('<video>', {
-				id: 'video',
-				class: 'fluid',
-				controls: true,
-				loop: true,
-				src: src
-			});
-			video.appendTo("#parent");
+			vm.video_src = src;
+		} else if (ext == "swf") {
+			vm.swf_src = src;
 		}
 		vm.preload();
+		if (ext == "swf") {
+			return function() {
+				var swf = document.getElementById('swf');
+				console.log(swf);
+			}
+		}
 	}
 
 	vm.preload = function() {
@@ -293,10 +327,16 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		}
 	}
 
+	vm.removeActive = function() {
+		vm.img_src = false;
+		vm.video_src = false;
+		vm.swf_src = false;
+		vm.loaded = false;
+	}
+
 	vm.switchTab = function(i) {
 		vm.i = i;
-		$("#image").remove();
-		$("#video").remove();
+		vm.removeActive();
 		vm.setActive(vm.tabs[vm.i].index);
 		$('#tag-input').focus();
 	}
@@ -304,6 +344,15 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	vm.newTab = function() {
 		vm.tabs.push(vm.new_tab());
 		vm.switchTab(vm.tabs.length - 1);
+	}
+
+	vm.onLoad = function() {
+		console.log("Loaded!");
+		vm.loaded = true;
+	}
+
+	vm.onUnload = function() {
+		console.log("Unloaded!");
 	}
 
 	var height = $('#search').outerHeight(true) + $('#pagination').outerHeight(true);
@@ -319,30 +368,30 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				case 38:
 					vm.incPage(1);
 					break;
-				// down
+					// down
 				case 40:
 					vm.incPage(0);		
 					break;
-				// enter
+					// enter
 				case 13:
 					vm.newQuery(vm.tabs[vm.i].current_api);
 					break;
-				// left
+					// left
 				case 37:
 					if (vm.tabs[vm.i].index > 0) {
 						vm.tabs[vm.i].index = vm.tabs[vm.i].index - 1;
 						vm.setActive(vm.tabs[vm.i].index);
 					}
 					break;
-				// right
+					// right
 				case 39:
 					if (vm.tabs[vm.i].index < vm.tabs[vm.i].data.length - 1 &&
-						vm.tabs[vm.i].data.length > 0) {
+							vm.tabs[vm.i].data.length > 0) {
 						vm.tabs[vm.i].index = vm.tabs[vm.i].index + 1;
 						vm.setActive(vm.tabs[vm.i].index);
 					}
 					break;
-				// esc
+					// esc
 				case 27:
 					//$scope.toggleFullscreen();
 					break;

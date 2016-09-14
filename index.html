@@ -105,6 +105,17 @@
 		</ul>
 	
 		<div class="max-height center" id="parent">
+			<div ng-hide="true">
+			{{ vm.img_src }}
+			{{ vm.video_src }}
+			{{ vm.swf_src }}
+			</div>
+			<img id="image" class="fluid" ng-if="vm.img_src" ng-src="{{ vm.img_src }}" onclick="toggleFit(this)" imageonload="vm.onLoad()">
+			<video id="video" class="fluid" ng-if="vm.video_src" ng-src="{{ vm.video_src | trusted }}" controls loop imageonload="vm.onLoad()">
+			</video>
+			<div ng-if="vm.swf_src" style="height: 100%;">
+				<webview id="swf" ng-src="{{ vm.swf_src | trusted }}" style="height: 100%;" plugins></webview>
+			</div>
 			<div ng-show="!vm.tabs[vm.i].active" style="text-align: left;">
 				<div class="container">
 					<h1>Quick Start</h1>

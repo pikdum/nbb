@@ -27,6 +27,35 @@ autoUpdater.on('update-downloaded', function() {
   win.webContents.send('updateStatus', updateStatus);
 });
 
+let pluginName;
+let flashPath;
+switch (process.platform) {
+  case 'win32':
+    pluginName = 'pepflashplayer.dll';
+    flashPath = "C:\\PepperFlash\\";
+    break;
+  case 'darwin':
+    pluginName = 'PepperFlashPlayer.plugin';
+    break;
+  case 'linux':
+    pluginName = 'libpepflashplayer.so';
+    flashPath = "/usr/lib/pepperflashplugin-nonfree/";
+    break;
+}
+
+try {
+  console.log(app.getPath('pepperFlashSystemPlugin'));
+  flashPath = app.getPath('pepperFlashSystemPlugin');
+  console.log("Using:", flashPath + pluginName);
+} catch(e) {
+  console.log("Could not auto-detect flash.\nUsing:", flashPath + pluginName);
+}
+
+try {
+  app.commandLine.appendSwitch('ppapi-flash-path', flashPath + pluginName);
+} catch(e) {
+  console.log("No flash found.");
+}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 

@@ -1,11 +1,28 @@
 var app = angular.module('app', []);
 const {ipcRenderer} = require('electron');
 
+angular.module('app')
+.directive('menuClose', function() {
+	return {
+		restrict: 'AC',
+		link: function($scope, $element) {
+			$element.bind('click', function() {
+				var drawer = angular.element(document.querySelector('.mdl-layout__drawer'));
+				if(drawer) {
+					drawer.toggleClass('is-visible');
+					var obfuscator = angular.element(document.querySelector('.mdl-layout__obfuscator'));
+					obfuscator.toggleClass('is-visible');
+				}
+			});
+		}
+	};
+});
+
 function toggleFit(e) {
-	if ($(e).hasClass('fluid')) {
-		$(e).removeClass('fluid');
+	if ($(e).hasClass('fitImage')) {
+		$(e).removeClass('fitImage');
 	} else {
-		$(e).addClass('fluid');
+		$(e).addClass('fitImage');
 	}
 }
 
@@ -38,6 +55,16 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		"positionClass": "toast-bottom-right"
 	}
 	$('#tag-input').focus();
+	vm.fitImage = true;
+
+	vm.toggleFit = function() {
+		if ($('#image').hasClass('fitImage')) {
+			$('#image').removeClass('fitImage');
+		} else {
+			$('#image').addClass('fitImage');
+		}
+		vm.fitImage = !vm.fitImage;
+	}
 
 	vm.appVersion = "";
 	ipcRenderer.on('appVersion', function(event, arg) {
@@ -172,7 +199,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 					});
 					vm.tabs[vm.i].loading = false;
 					setTimeout(function() {
-						$("#preview_list").scrollTo(0, 100);
+						$(".verticalPreviews").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
@@ -211,7 +238,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 					}
 					vm.tabs[vm.i].loading = false;
 					setTimeout(function() {
-						$("#preview_list").scrollTo(0, 100);
+						$(".verticalPreviews").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
@@ -251,7 +278,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		vm.removeActive();
 		var e = ".preview:eq(" + index + ")";
 		setTimeout(function() {
-			$("#preview_list").scrollTo(e, 100, {
+			$(".verticalPreviews").scrollTo(e, 100, {
 				offset: 0 - $(window).width() / 3
 			});
 		}, 100);
@@ -325,6 +352,9 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		if (vm.i == i) {
 			vm.switchTab(vm.i);
 		}
+		if (i < vm.i) {
+			vm.switchTab(vm.i - 1);
+		}
 	}
 
 	vm.removeActive = function() {
@@ -343,7 +373,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	vm.newTab = function() {
 		vm.tabs.push(vm.new_tab());
-		vm.switchTab(vm.tabs.length - 1);
 	}
 
 	vm.onLoad = function() {

@@ -63,8 +63,9 @@
 			</nav>
 		</div>
 		<main class="mdl-layout__content" style="overflow: hidden;">
+		<div ng-show="vm.tabs[vm.i].loading" class="loadingBar mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
 		<div class="page-content">
-			<div class="mdl-grid" ng-hide="vm.tabs[vm.i].data[0]">
+			<div class="mdl-grid" ng-hide="vm.tabs[vm.i].data[0] || vm.tabs[vm.i].loading">
 				<div class="mdl-cell mdl-cell--12-col">
 					<div class="mdl-card mdl-shadow--4dp" style="width: 100%;">
 						<div class="mdl-card__supporting-text">

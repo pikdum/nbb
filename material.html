@@ -80,12 +80,10 @@
 			</div>
 			<div class="mainBody">
 				<div class="verticalPreviews">
-					<div class="" ng-repeat="entry in vm.tabs[vm.i].data">
+					<div ng-repeat="entry in vm.tabs[vm.i].data">
 						<a ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))" href="#">
-							<div ng-class="{'mdl-shadow--8dp': vm.tabs[vm.i].active == entry }" class="mdl-card mdl-shadow--4dp imgCropper preview" style="width: 100%;">
-								<div class="mdl-card__media" style="background-color: white;">
+							<div ng-class="{'mdl-shadow--2dp': vm.tabs[vm.i].active == entry }" class="imgCropper preview" style="width: 100%;">
 									<img ng-src="{{ entry.preview_url ? entry.preview_url : vm.tabs[vm.i].base_url + entry.preview_file_url }}">
-								</div>
 							</div>
 						</a>
 					</div>

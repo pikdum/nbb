@@ -104,10 +104,11 @@
 
 .verticalPreviews {
 	overflow-y: auto;
+	margin-left: -10px;
 	padding-right: 20px;
 	height: calc(100vh - 80px);
 	max-height: calc(100vh - 80px);
-	width: 220px;
+	width: 180px;
 }
 
 .verticalImage {

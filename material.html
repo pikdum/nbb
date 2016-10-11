@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="app" ng-controller="appCtrl as vm" id="preview_list">
+<html ng-app="app" ng-controller="appCtrl as vm">
 	<title>nbb v{{ vm.appVersion }} {{ vm.tabs[vm.i].title }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -31,6 +31,7 @@
 				<!-- Add spacer, to align navigation to the right -->
 				<div class="mdl-layout-spacer"></div>
 				<!-- Right aligned menu below button -->
+				<i style="cursor: pointer; margin-right: 1em;" ng-click="vm.viewTags = !vm.viewTags" class="material-icons">list</i>
 				<i style="cursor: pointer;" ng-click="vm.toggleFit()" ng-show="vm.fitImage" class="material-icons">zoom_in</i>
 				<i style="cursor: pointer;" ng-click="vm.toggleFit()" ng-hide="vm.fitImage" class="material-icons">zoom_out</i>
 				<button style="margin-left: 1em;" id="demo-menu-lower-right"
@@ -95,7 +96,7 @@
 				<div class="dragscroll verticalImage">
 					<img id="image" class="fitImage" ng-if="vm.img_src" ng-src="{{ vm.img_src }}" imageonload="vm.onLoad()">
 				</div>
-				<div class="tagList">
+				<div class="tagList" ng-show="vm.viewTags">
 					<span ng-class="{tagIsActive: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="mdl-chip tag" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">
 						<span class="mdl-chip__text">{{ tag }}</span>
 					</span>

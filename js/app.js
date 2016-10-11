@@ -85,7 +85,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	vm.i = 0;
 	vm.preloadCount = 3;
-	vm.show_tags = false;
+	vm.viewTags = false;
 
 	vm.tabs = [];
 	vm.new_tab = function() {

@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<div class="mainBody">
-				<div class="verticalPreviews">
+				<div class="verticalPreviews dragscroll">
 					<div ng-repeat="entry in vm.tabs[vm.i].data">
 						<a ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))" href="#">
 							<div ng-class="{'mdl-shadow--2dp': vm.tabs[vm.i].active == entry }" class="imgCropper preview" style="width: 100%;">
@@ -92,8 +92,14 @@
 						</a>
 					</div>
 				</div>
-				<div style="cursor: -webkit-grab;" class="dragscroll verticalImage">
-					<img style="cursor: -webkit-grab;" id="image" class="fitImage" ng-if="vm.img_src" ng-src="{{ vm.img_src }}" imageonload="vm.onLoad()">
+				<div class="dragscroll verticalImage">
+					<img id="image" class="fitImage" ng-if="vm.img_src" ng-src="{{ vm.img_src }}" imageonload="vm.onLoad()">
+				</div>
+				<div class="tagList">
+					<span ng-class="{tagIsActive: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="mdl-chip tag" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">
+						<span class="mdl-chip__text">{{ tag }}</span>
+					</span>
+					</span>
 				</div>
 
 			</div>

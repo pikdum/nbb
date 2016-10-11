@@ -89,6 +89,23 @@
 	width: 100%;
 	margin-left: 10px;
 }
+.tagList {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	overflow: hidden;
+	padding-right: 20px;
+	height: calc(100vh - 80px);
+	max-height: calc(100vh - 80px);
+	max-width: calc(100vw - 220px);
+	pointer-events: none;
+}
+.tag {
+	pointer-events: all;
+}
+.tagIsActive {
+	background-color: #F48FB1;
+}
 
 .fitImage {
 	max-width: 100%;
@@ -101,8 +118,8 @@
 }
 
 ::-webkit-scrollbar {
-	width: 2px;
-	height: 2px;
+	width: 5px;
+	height: 5px;
 }
 ::-webkit-scrollbar-button {
 	width: 0px;
@@ -128,4 +145,10 @@
 }
 ::-webkit-scrollbar-corner {
 	background: transparent;
+}
+html,body {
+	-webkit-user-select: none;
+}
+a, button, input {
+	-webkit-app-region: no-drag;
 }

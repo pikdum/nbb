@@ -45,8 +45,8 @@
 							Download
 						</li>
 					</a>
-					<li class="mdl-menu__item">Copy Page URL</li>
-					<li class="mdl-menu__item">Copy Content URL</li>
+					<li class="mdl-menu__item clipboard" ng-attr-data-clipboard-text="{{ vm.apis[vm.tabs[vm.i].api].page_url + vm.tabs[vm.i].active.id }}">Copy Page URL</li>
+					<li class="mdl-menu__item clipboard" ng-attr-data-clipboard-text="{{ vm.img_src }}">Copy Content URL</li>
 				</ul>
 			</div>
 		</header>

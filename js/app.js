@@ -171,39 +171,41 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	vm.newQuery = newQuery;
 
 	vm.queryAPI = function(api) {
+		let index = vm.i;
+		console.log(index);
 		console.log(api);
-		vm.tabs[vm.i].tags = vm.tabs[vm.i].tags.toLowerCase();
-		vm.tabs[vm.i].api = api;
-		vm.tabs[vm.i].index = -1;
-		vm.tabs[vm.i].loading = true;
+		vm.tabs[index].tags = vm.tabs[index].tags.toLowerCase();
+		vm.tabs[index].api = api;
+		vm.tabs[index].index = -1;
+		vm.tabs[index].loading = true;
 		var api_data = vm.apis[api];
 		console.log(api_data);
 		var url = api_data.api;
 		console.log(url);
-		vm.tabs[vm.i].base_url = api_data.base_url;
+		vm.tabs[index].base_url = api_data.base_url;
 		console.log(api_data.base_url);
-		vm.tabs[vm.i].title = "- " + vm.apis[vm.tabs[vm.i].api].name + " - " + vm.tabs[vm.i].tags + " - " + "Page " + vm.tabs[vm.i].page;
+		vm.tabs[index].title = "- " + vm.apis[vm.tabs[index].api].name + " - " + vm.tabs[index].tags + " - " + "Page " + vm.tabs[index].page;
 		console.log('a');
 		if (api_data.api_type == "json") {
 			var options = {
 				limit: '100',
-				page: vm.tabs[vm.i].page,
-				tags: vm.tabs[vm.i].tags
+				page: vm.tabs[index].page,
+				tags: vm.tabs[index].tags
 			};
 			$http.get(url, {params: options}).
 				success(function(data) {
 					console.log(data);
-					vm.tabs[vm.i].data = data;
-					vm.tabs[vm.i].data = vm.tabs[vm.i].data.filter(function(v) {
+					vm.tabs[index].data = data;
+					vm.tabs[index].data = vm.tabs[index].data.filter(function(v) {
 						return v.file_url;
 					});
-					vm.tabs[vm.i].loading = false;
+					vm.tabs[index].loading = false;
 					setTimeout(function() {
 						$(".verticalPreviews").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
-					vm.tabs[vm.i].loading = false;
+					vm.tabs[index].loading = false;
 				});
 		} else if (api_data.api_type == "xml") {
 			var options = {
@@ -211,8 +213,8 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				s: 'post',
 				q: 'index',
 				limit: '100',
-				pid: vm.tabs[vm.i].page - 1,
-				tags: vm.tabs[vm.i].tags
+				pid: vm.tabs[index].page - 1,
+				tags: vm.tabs[index].tags
 			};
 			$http.get(url, {params: options}).
 				success(function(data) {
@@ -220,7 +222,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 					var posts = x2js.xml_str2json(data)['posts']['post'];
 					console.log(data);
 					console.log(posts);
-					vm.tabs[vm.i].data = [];
+					vm.tabs[index].data = [];
 					for (var i = 0; i < posts.length; i++) {
 						var e = {};
 						if (posts[i]._id) {
@@ -234,15 +236,15 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 							e.tag_string = posts[i].tags;
 							e.id = posts[i].id;
 						}
-						vm.tabs[vm.i].data.push(e);
+						vm.tabs[index].data.push(e);
 					}
-					vm.tabs[vm.i].loading = false;
+					vm.tabs[index].loading = false;
 					setTimeout(function() {
 						$(".verticalPreviews").scrollTo(0, 100);
 					}, 100);
 				}).error(function() {
 					console.log("error");
-					vm.tabs[vm.i].loading = false;
+					vm.tabs[index].loading = false;
 				});
 		}
 	}
@@ -264,16 +266,17 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	vm.setActive = function(index) {
-		if (vm.tabs[vm.i].data[index] === undefined) {
+		let tabIndex = vm.i;
+		if (vm.tabs[tabIndex].data[index] === undefined) {
 			console.log("[DEBUG] Data is undefined. Ignoring.");
 			return;
 		}
-		vm.tabs[vm.i].index = index;
-		console.log("[DEBUG] index: " + vm.tabs[vm.i].index);
+		vm.tabs[tabIndex].index = index;
+		console.log("[DEBUG] index: " + vm.tabs[tabIndex].index);
 		$(".selected").removeClass("selected");
-		vm.tabs[vm.i].active = vm.tabs[vm.i].data[index];
+		vm.tabs[tabIndex].active = vm.tabs[tabIndex].data[index];
 		console.log("[DEBUG] active:");
-		console.log(vm.tabs[vm.i].active);
+		console.log(vm.tabs[tabIndex].active);
 		$(".preview").eq(index).parent().addClass("selected");
 		vm.removeActive();
 		var e = ".preview:eq(" + index + ")";
@@ -282,19 +285,19 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 				offset: 0 - $(window).width() / 3
 			});
 		}, 100);
-		var file_url = vm.tabs[vm.i].active.file_url;
+		var file_url = vm.tabs[tabIndex].active.file_url;
 		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-			file_url : vm.tabs[vm.i].base_url + file_url;
-		vm.tabs[vm.i].src = src;
-		console.log("[DEBUG] src: " + vm.tabs[vm.i].src);
+			file_url : vm.tabs[tabIndex].base_url + file_url;
+		vm.tabs[tabIndex].src = src;
+		console.log("[DEBUG] src: " + vm.tabs[tabIndex].src);
 		var ext = src.split('.').slice(-1)[0];
 		console.log(src);
 		if (vm.IMAGE_TYPES.indexOf(ext) >= 0) {
-			vm.img_src = src;
+			vm.tabs[tabIndex].img_src = src;
 		} else if (vm.VIDEO_TYPES.indexOf(ext) >= 0) {
-			vm.video_src = src;
+			vm.tabs[tabIndex].video_src = src;
 		} else if (ext == "swf") {
-			vm.swf_src = src;
+			vm.tabs[tabIndex].swf_src = src;
 		}
 		vm.preload();
 		if (ext == "swf") {
@@ -306,11 +309,12 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	vm.preload = function() {
+		let index = vm.i;
 		var images = new Array();
 		for (var i = 0; i < vm.preloadCount; i++) {
-			var file_url = vm.tabs[vm.i].data[vm.tabs[vm.i].index + i].file_url;
+			var file_url = vm.tabs[index].data[vm.tabs[index].index + i].file_url;
 			var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-				file_url : vm.tabs[vm.i].base_url + file_url;
+				file_url : vm.tabs[index].base_url + file_url;
 			images[i] = new Image();
 			images[i].src = src;
 		}
@@ -358,10 +362,10 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	}
 
 	vm.removeActive = function() {
-		vm.img_src = false;
-		vm.video_src = false;
-		vm.swf_src = false;
-		vm.loaded = false;
+		vm.tabs[vm.i].img_src = false;
+		vm.tabs[vm.i].video_src = false;
+		vm.tabs[vm.i].swf_src = false;
+		vm.tabs[vm.i].loaded = false;
 	}
 
 	vm.switchTab = function(i) {
@@ -377,7 +381,7 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 
 	vm.onLoad = function() {
 		console.log("Loaded!");
-		vm.loaded = true;
+		vm.tabs[vm.i].loaded = true;
 	}
 
 	vm.onUnload = function() {

@@ -95,10 +95,14 @@
 					</div>
 				</div>
 				<div class="dragscroll verticalImage">
-					<img id="image" class="fitImage" ng-if="vm.tabs[vm.i].img_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].img_src }}" imageonload="vm.onLoad()"> </div>
+					<img id="image" class="fitImage" ng-if="vm.tabs[vm.i].img_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].img_src }}" imageonload="vm.onLoad()">
+					<video id="video" class="fitImage" ng-if="vm.tabs[vm.i].video_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].video_src | trusted }}" controls loop>
+					</video>
+					<div ng-if="vm.tabs[vm.i].swf_src && !vm.tabs[vm.i].loading" style="height: 100%;">
+						<webview id="swf" ng-src="{{ vm.tabs[vm.i].swf_src | trusted }}" style="height: 100%;" plugins></webview>
+					</div>
+				</div>
 				<div class="tagList" ng-show="vm.viewTags">
-						{{ vm.tabs[vm.i].loading }}
-						{{ vm.tabs[vm.i].img_src }}
 					<span ng-class="{tagIsActive: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="mdl-chip tag" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">
 						<span class="mdl-chip__text">{{ tag }}</span>
 					</span>

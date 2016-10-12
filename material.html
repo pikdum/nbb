@@ -1,0 +1,129 @@
+<!doctype html>
+<html ng-app="app" ng-controller="appCtrl as vm">
+	<title>nbb v{{ vm.appVersion }} {{ vm.tabs[vm.i].title }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.pink-blue.min.css">
+	<link rel="stylesheet" href="css/material.css">
+	<script src="static/angular.js"></script>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="static/jquery.min.js"></script>
+	<script src="static/jquery.scrollTo.min.js"></script>
+	<script src="static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="static/xml2json.min.js"></script>
+	<script src="static/toastr.min.js"></script>
+	<script src="static/clipboard.min.js"></script>
+	<script src="static/dragscroll.js"></script>
+	<script>if (window.module) module = window.module;</script>
+	<script src="js/app.js"></script>
+	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<!-- Always shows a header, even in smaller screens. -->
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<!-- Title -->
+				<div style="margin-right: 5px;" class="mdh-expandable-search">
+					<i ng-click="vm.newQuery(vm.tabs[vm.i].current_api)" style="cursor: pointer" class="material-icons">search</i>
+					<form ng-submit="vm.newQuery(vm.tabs[vm.i].current_api)">
+						<input type="text" ng-model="vm.tabs[vm.i].tags" placeholder="Search" size="1">
+					</form>
+				</div>
+
+				<button id="booruSelector" class="mdl-button mdl-js-button">
+					{{ vm.tabs[vm.i].current_api }}
+				</button>
+				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="booruSelector">
+					<li ng-class="{activeBooru: k == vm.tabs[vm.i].current_api}" ng-click="vm.setAPI(k)" ng-repeat="(k, v) in vm.apis" class="mdl-menu__item">
+						{{ v.name }}
+					</li>
+				</ul>
+				<!-- Add spacer, to align navigation to the right -->
+				<div class="mdl-layout-spacer"></div>
+				<!-- Right aligned menu below button -->
+				<i style="cursor: pointer; margin-right: 1em;" ng-click="vm.viewTags = !vm.viewTags" class="material-icons">list</i>
+				<i style="cursor: pointer;" ng-click="vm.toggleFit()" ng-show="vm.fitImage" class="material-icons">zoom_in</i>
+				<i style="cursor: pointer;" ng-click="vm.toggleFit()" ng-hide="vm.fitImage" class="material-icons">zoom_out</i>
+				<button style="margin-left: 1em;" id="demo-menu-lower-right"
+																			class="mdl-button mdl-js-button mdl-button--icon">
+					<i class="material-icons">more_vert</i>
+				</button>
+
+				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+				for="demo-menu-lower-right">
+					<a style="text-decoration: none;" download ng-href="{{ vm.tabs[vm.i].src }}">
+						<li class="mdl-menu__item">
+							Download
+						</li>
+					</a>
+					<li class="mdl-menu__item clipboard" ng-attr-data-clipboard-text="{{ vm.apis[vm.tabs[vm.i].api].page_url + vm.tabs[vm.i].active.id }}">Copy Page URL</li>
+					<li class="mdl-menu__item clipboard" ng-attr-data-clipboard-text="{{ vm.img_src }}">Copy Content URL</li>
+				</ul>
+			</div>
+		</header>
+		<div class="mdl-layout__drawer">
+			<nav class="mdl-navigation">
+				<button ng-click="vm.newTab()" class="mdl-button mdl-js-button mdl-button--primary mdl-js-ripple-effect">
+					New Tab
+				</button>
+				<a href="#" ng-repeat="tab in vm.tabs" ng-click="vm.switchTab(vm.tabs.indexOf(tab))" class="mdl-navigation__link" menu-close>
+					{{ tab.tags == "" ? "New Tab" : tab.tags }}
+					<i style="float: right;" ng-click="vm.closeTab(vm.tabs.indexOf(tab))" class="material-icons">close</i>
+				</a>
+			</nav>
+		</div>
+		<main class="mdl-layout__content" style="overflow: hidden;">
+		<div ng-show="vm.tabs[vm.i].loading" class="loadingBar mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+		<div class="page-content">
+			<div class="mdl-grid" ng-hide="vm.tabs[vm.i].data[0] || vm.tabs[vm.i].loading">
+				<div class="mdl-cell mdl-cell--12-col">
+					<div class="mdl-card mdl-shadow--4dp" style="width: 100%;">
+						<div class="mdl-card__supporting-text">
+							<h2>Quick Start</h2>
+							<ol>
+								<li>Type a tag into the search bar at the top, such as "<a ng-click="vm.tabs[vm.i].tags = 'landscape'">landscape</a>".</li>
+								<li>Press the blue search button or the enter key.</li>
+								<li>Image previews are on the bottom of the page.</li>
+								<li>Cycle through images by clicking on them or with the left and right arrow keys.</li>
+								<li>Cycle through pages with the down and up arrow keys.</li>
+								<li>Click on the image to make it full-sized. Scroll around with the scrollbars or by autoscrolling with the middle mouse button.</li>
+								<li>Click on the tag icon to view the current image's tags. Add/remove tags to the search bar by clicking on them.</li>
+								<li>The booru can be changed by clicking on the button and selecting a different one. Press enter to use the newly selected booru.</li>
+							</ol>
+						</div>
+						<div ng-show="vm.updateStatus" style="text-align: center;" class="mdl-card__supporting-text">
+							<h3 ng-show="vm.updateStatus == 'update-available'">Updating...</h3>
+							<h3 ng-show="vm.updateStatus == 'update-not-available'">nbb is up to date.</h3>
+							<h3 ng-show="vm.updateStatus == 'update-downloaded'">Relaunch nbb to finish updating.</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mainBody">
+				<div class="verticalPreviews dragscroll">
+					<div ng-repeat="entry in vm.tabs[vm.i].data">
+						<a ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))" href="#">
+							<div ng-class="{'mdl-shadow--2dp': vm.tabs[vm.i].active == entry }" class="imgCropper preview" style="width: 100%;">
+								<img ng-src="{{ entry.preview_url ? entry.preview_url : vm.tabs[vm.i].base_url + entry.preview_file_url }}">
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="dragscroll verticalImage">
+					<img ng-class="{fitImage: vm.fitImage}" id="image" ng-if="vm.tabs[vm.i].img_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].img_src }}" imageonload="vm.onLoad()">
+					<video id="video" ng-class="{fitImage: vm.fitImage}" ng-if="vm.tabs[vm.i].video_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].video_src | trusted }}" controls loop>
+					</video>
+					<div ng-if="vm.tabs[vm.i].swf_src && !vm.tabs[vm.i].loading" style="height: 100%;">
+						<webview id="swf" ng-src="{{ vm.tabs[vm.i].swf_src | trusted }}" style="height: 100%;" plugins></webview>
+					</div>
+				</div>
+				<div class="tagList" ng-show="vm.viewTags">
+					<span ng-class="{tagIsActive: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="mdl-chip tag" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">
+						<span class="mdl-chip__text">{{ tag }}</span>
+					</span>
+				</div>
+
+			</div>
+		</div>
+		</main>
+	</div>
+</html>

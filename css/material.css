@@ -1,0 +1,166 @@
+.mdh-expandable-search {
+	margin: 0 50px;
+	align-items: center;
+	justify-content: center;
+}
+
+.mdh-expandable-search form {
+	max-width: 800px;
+}
+
+.mdh-expandable-search,
+.mdh-expandable-search form,
+.mdh-expandable-search input {
+	flex-grow: 1;
+}
+
+.mdh-expandable-search,
+.mdh-expandable-search form {
+	display: inline-flex;
+}
+
+.mdh-expandable-search .material-icons {
+	position: relative;
+	right: -40px;
+	margin-left: -24px;
+}
+
+.mdh-expandable-search input {
+	outline: none;
+	border: none;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color: #F06292;
+	padding: 0px 35px 0px 70px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.mdh-expandable-search input::-webkit-input-placeholder { /* WebKit browsers */
+	color:    #FFFFFF;
+}
+
+/* Bug fix: https://github.com/google/material-design-lite/issues/1078
+ *  * To much padding on the left of header when the menu button is hidden */
+@media screen and (min-width: 851px) {
+	.mdl-layout__header-row {
+		padding: 0 40px 0 40px;
+	}
+}
+
+.mdl-badge[data-badge]:after {
+	right: -7px;
+	top: -8px;
+}
+
+.imgCropper
+{
+	width: 100%;
+	height: 150px;
+	overflow: hidden;
+	margin: 10px;
+	position: relative;
+}
+.imgCropper img {
+	position:absolute;
+	left: -100%;
+	right: -100%;
+	top: -100%;
+	bottom: -100%;
+	margin: auto;
+	width: auto;
+	height: auto;
+}
+
+.verticalPreviews {
+	overflow-y: auto;
+	margin-left: -10px;
+	padding-right: 20px;
+	height: calc(100vh - 80px);
+	max-height: calc(100vh - 80px);
+	width: 180px;
+}
+
+.verticalImage {
+	height: calc(100vh - 80px);
+	max-height: calc(100vh - 80px);
+	overflow: auto;
+	width: 100%;
+	margin-left: 10px;
+}
+.tagList {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	overflow: hidden;
+	padding-right: 20px;
+	height: calc(100vh - 80px);
+	max-height: calc(100vh - 80px);
+	max-width: calc(100vw - 220px);
+	pointer-events: none;
+}
+.tag {
+	pointer-events: all;
+}
+.tagIsActive {
+	background-color: #F48FB1;
+}
+
+.fitImage {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.mainBody {
+	display: flex;
+	padding: 10px;
+}
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+::-webkit-scrollbar-button {
+	width: 0px;
+	height: 0px;
+}
+::-webkit-scrollbar-thumb {
+	background: #E91E63;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+}
+::-webkit-scrollbar-thumb:active {
+}
+::-webkit-scrollbar-track {
+	background: #e1e1e1;
+	border: 0px none #ffffff;
+	border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+}
+::-webkit-scrollbar-track:active {
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+html,body {
+	-webkit-user-select: none;
+}
+a, button, input {
+	-webkit-app-region: no-drag;
+}
+.loadingBar {
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.activeBooru {
+	display: none;
+}
+#booruSelector {
+	color: white;
+}

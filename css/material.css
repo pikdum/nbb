@@ -158,3 +158,9 @@ a, button, input {
 	left: 0;
 	top: 0;
 }
+.activeBooru {
+	display: none;
+}
+#booruSelector {
+	color: white;
+}

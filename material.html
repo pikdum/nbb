@@ -22,12 +22,21 @@
 		<header class="mdl-layout__header">
 			<div class="mdl-layout__header-row">
 				<!-- Title -->
-				<div class="mdh-expandable-search">
-					<i class="material-icons">search</i>
+				<div style="margin-right: 5px;" class="mdh-expandable-search">
+					<i ng-click="vm.newQuery(vm.tabs[vm.i].current_api)" style="cursor: pointer" class="material-icons">search</i>
 					<form action="#">
 						<input type="text" ng-model="vm.tabs[vm.i].tags" placeholder="Search" size="1">
 					</form>
 				</div>
+
+				<button id="booruSelector" class="mdl-button mdl-js-button">
+				{{ vm.tabs[vm.i].current_api }}
+				</button>
+				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="booruSelector">
+					<li ng-class="{activeBooru: k == vm.tabs[vm.i].current_api}" ng-click="vm.setAPI(k)" ng-repeat="(k, v) in vm.apis" class="mdl-menu__item">
+						{{ v.name }}
+					</li>
+				</ul>
 				<!-- Add spacer, to align navigation to the right -->
 				<div class="mdl-layout-spacer"></div>
 				<!-- Right aligned menu below button -->

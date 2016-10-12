@@ -24,7 +24,7 @@
 				<!-- Title -->
 				<div style="margin-right: 5px;" class="mdh-expandable-search">
 					<i ng-click="vm.newQuery(vm.tabs[vm.i].current_api)" style="cursor: pointer" class="material-icons">search</i>
-					<form action="#">
+					<form ng-submit="vm.newQuery(vm.tabs[vm.i].current_api)">
 						<input type="text" ng-model="vm.tabs[vm.i].tags" placeholder="Search" size="1">
 					</form>
 				</div>
@@ -109,8 +109,8 @@
 					</div>
 				</div>
 				<div class="dragscroll verticalImage">
-					<img id="image" class="fitImage" ng-if="vm.tabs[vm.i].img_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].img_src }}" imageonload="vm.onLoad()">
-					<video id="video" class="fitImage" ng-if="vm.tabs[vm.i].video_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].video_src | trusted }}" controls loop>
+					<img ng-class="{fitImage: vm.fitImage}" id="image" ng-if="vm.tabs[vm.i].img_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].img_src }}" imageonload="vm.onLoad()">
+					<video id="video" ng-class="{fitImage: vm.fitImage}" ng-if="vm.tabs[vm.i].video_src && !vm.tabs[vm.i].loading" ng-src="{{ vm.tabs[vm.i].video_src | trusted }}" controls loop>
 					</video>
 					<div ng-if="vm.tabs[vm.i].swf_src && !vm.tabs[vm.i].loading" style="height: 100%;">
 						<webview id="swf" ng-src="{{ vm.tabs[vm.i].swf_src | trusted }}" style="height: 100%;" plugins></webview>

@@ -58,9 +58,6 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 	vm.fitImage = true;
 
 	vm.toggleFit = function() {
-		if ($('#image').hasClass('fitImage')) {
-			$('#image').removeClass('fitImage');
-		} else {
 			$('#image').addClass('fitImage');
 		}
 		vm.fitImage = !vm.fitImage;

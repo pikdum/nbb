@@ -30,7 +30,7 @@
 				</div>
 
 				<button id="booruSelector" class="mdl-button mdl-js-button">
-				{{ vm.tabs[vm.i].current_api }}
+					{{ vm.tabs[vm.i].current_api }}
 				</button>
 				<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="booruSelector">
 					<li ng-class="{activeBooru: k == vm.tabs[vm.i].current_api}" ng-click="vm.setAPI(k)" ng-repeat="(k, v) in vm.apis" class="mdl-menu__item">
@@ -89,6 +89,11 @@
 								<li>Click on the tag icon to view the current image's tags. Add/remove tags to the search bar by clicking on them.</li>
 								<li>The booru can be changed by clicking on the button and selecting a different one. Press enter to use the newly selected booru.</li>
 							</ol>
+						</div>
+						<div ng-show="vm.updateStatus" style="text-align: center;" class="mdl-card__supporting-text">
+							<h3 ng-show="vm.updateStatus == 'update-available'">Updating...</h3>
+							<h3 ng-show="vm.updateStatus == 'update-not-available'">nbb is up to date.</h3>
+							<h3 ng-show="vm.updateStatus == 'update-downloaded'">Relaunch nbb to finish updating.</h3>
 						</div>
 					</div>
 				</div>

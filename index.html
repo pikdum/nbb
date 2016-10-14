@@ -32,7 +32,6 @@
 						<span class="icon-bar"></span>
 					</button>
 				</div>
-				
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<form class="navbar-form navbar-left nomargin" role="search" ng-submit="vm.newQuery(vm.tabs[vm.i].current_api)">
 						<div class="form-group" style="-webkit-app-region: no-drag">
@@ -55,14 +54,10 @@
 						<button type="submit" class="btn btn-default btn-primary">
 							<span class="glyphicon glyphicon-search"></span>
 						</button>
-						
-						
 				<a class="btn btn-default" ng-click="vm.incPage(0)">&laquo;</a>
 				<a class="btn btn-default">Page {{ vm.tabs[vm.i].page }}</a>
 				<a class="btn btn-default" ng-click="vm.incPage(1)">&raquo;</a>
-						
 					</form>
-					
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="index.html">
 							<span class="glyphicon glyphicon-refresh"></span>
@@ -88,22 +83,17 @@
 							<a ng-click="vm.closeTab(vm.i)"><span class="glyphicon glyphicon-remove"></span></a>
 						</li>
 					</ul>
-					
 				</div>
-				
 			</div>
 		</nav>
-		
 		<div id="preview_list" class="horizontal-scroll" ng-class="{show: vm.tabs[vm.i].index == -1}">
 			<a ng-repeat="entry in vm.tabs[vm.i].data">
 				<img class="preview" ng-src="{{ entry.preview_url ? entry.preview_url : vm.tabs[vm.i].base_url + entry.preview_file_url }}" ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))">
 			</a>
 		</div>
-		
 		<ul ng-hide="!vm.show_tags" id="tag-list" class="list-group">
 			<li ng-hide="tag == ''" ng-class="{active: vm.tabs[vm.i].tags.split(' ').indexOf(tag) > -1}" class="list-group-item" ng-repeat="tag in vm.tabs[vm.i].active.tag_string ? vm.tabs[vm.i].active.tag_string.split(' ') : vm.tabs[vm.i].active.tags.split(' ') track by $index" ng-click="vm.addRemoveTag(tag)">{{ tag }}</li>
 		</ul>
-	
 		<div class="max-height center" id="parent">
 			<div ng-hide="true">
 			{{ vm.img_src }}

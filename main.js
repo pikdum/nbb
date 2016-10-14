@@ -8,113 +8,113 @@ var updateStatus = "";
 const feedURL = 'https://files.kuudere.moe/nbb/win64';
 autoUpdater.setFeedURL(feedURL);
 autoUpdater.on('error', function(err) {
-  console.log(err);
+    console.log(err);
 });
 autoUpdater.on('checking-for-update', function() {
-  updateStatus = "checking-for-update";
-  win.webContents.send('updateStatus', updateStatus);
+    updateStatus = "checking-for-update";
+    win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-available', function() {
-  updateStatus = "update-available";
-  win.webContents.send('updateStatus', updateStatus);
+    updateStatus = "update-available";
+    win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-not-available', function() {
-  updateStatus = "update-not-available";
-  win.webContents.send('updateStatus', updateStatus);
+    updateStatus = "update-not-available";
+    win.webContents.send('updateStatus', updateStatus);
 });
 autoUpdater.on('update-downloaded', function() {
-  updateStatus = "update-downloaded";
-  win.webContents.send('updateStatus', updateStatus);
+    updateStatus = "update-downloaded";
+    win.webContents.send('updateStatus', updateStatus);
 });
 
 let pluginName;
 let flashPath;
 switch (process.platform) {
-  case 'win32':
+case 'win32':
     pluginName = 'pepflashplayer.dll';
     flashPath = "C:\\PepperFlash\\";
     break;
-  case 'darwin':
+case 'darwin':
     pluginName = 'PepperFlashPlayer.plugin';
     break;
-  case 'linux':
+case 'linux':
     pluginName = 'libpepflashplayer.so';
     flashPath = "/usr/lib/pepperflashplugin-nonfree/";
     break;
 }
 
 try {
-  console.log(app.getPath('pepperFlashSystemPlugin'));
-  flashPath = app.getPath('pepperFlashSystemPlugin');
-  console.log("Using:", flashPath);
+    console.log(app.getPath('pepperFlashSystemPlugin'));
+    flashPath = app.getPath('pepperFlashSystemPlugin');
+    console.log("Using:", flashPath);
 } catch(e) {
-  console.log("Could not auto-detect flash.\nUsing:", flashPath + pluginName);
-  flashPath = flashPath + pluginName;
+    console.log("Could not auto-detect flash.\nUsing:", flashPath + pluginName);
+    flashPath = flashPath + pluginName;
 }
 
 try {
-  app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
+    app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
 } catch(e) {
-  console.log("No flash found.");
+    console.log("No flash found.");
 }
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
 ipcMain.on('ping', function(event, arg) {
-  event.sender.send('appVersion', app.getVersion());
-  event.sender.send('updateStatus', updateStatus);
-})
+    event.sender.send('appVersion', app.getVersion());
+    event.sender.send('updateStatus', updateStatus);
+});
 
 function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({
-	width: 900,
-	height: 700,
-	icon: "img/icon.png",
-	webPreferences: {
-		nodeIntegration: true
-	}})
+    // Create the browser window.
+    win = new BrowserWindow({
+        width: 900,
+        height: 700,
+        icon: "img/icon.png",
+        webPreferences: {
+            nodeIntegration: true
+        }});
 
-  // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/material.html`)
+    // and load the index.html of the app.
+    win.loadURL(`file://${__dirname}/material.html`);
 
-  autoUpdater.checkForUpdates();
+    autoUpdater.checkForUpdates();
 
-  // Open the DevTools.
-  //win.webContents.openDevTools()
+    // Open the DevTools.
+    //win.webContents.openDevTools()
 
-  // Emitted when the window is closed.
-  win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
+    // Emitted when the window is closed.
+    win.on('closed', () => {
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        win = null;
+    });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
-  createWindow();
-})
+    createWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+    // On macOS it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
-  }
-})
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (win === null) {
+        createWindow();
+    }
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

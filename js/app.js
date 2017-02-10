@@ -231,6 +231,18 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 							e.tag_string = posts[i].tags;
 							e.id = posts[i].id;
 						}
+						var src = "";
+						var file_url = e.preview_url;
+						if (file_url.indexOf("//") == 0) {
+							src = "https:" + file_url;
+						} else if (file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0) {
+							src = file_url;
+						} else {
+							src = vm.tabs[tabIndex].base_url + file_url;
+						}
+						e.preview_url = src;
+						console.log("[DEBUG] preview_url: " + e.preview_url);
+						console.log("[DEBUG] file_url: " + e.file_url);
 						vm.tabs[index].data.push(e);
 					}
 					vm.tabs[index].loading = false;
@@ -281,8 +293,14 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 			});
 		}, 100);
 		var file_url = vm.tabs[tabIndex].active.file_url;
-		var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-			file_url : vm.tabs[tabIndex].base_url + file_url;
+		var src = "";
+		if (file_url.indexOf("//") == 0) {
+			src = "https:" + file_url;
+		} else if (file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0) {
+			src = file_url;
+		} else {
+			src = vm.tabs[tabIndex].base_url + file_url;
+		}
 		vm.tabs[tabIndex].src = src;
 		console.log("[DEBUG] src: " + vm.tabs[tabIndex].src);
 		var ext = src.split('.').slice(-1)[0];
@@ -308,8 +326,14 @@ app.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
 		var images = new Array();
 		for (var i = 0; i < vm.preloadCount; i++) {
 			var file_url = vm.tabs[index].data[vm.tabs[index].index + i].file_url;
-			var src = file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0 ?
-				file_url : vm.tabs[index].base_url + file_url;
+			var src = "";
+			if (file_url.indexOf("//") == 0) {
+				src = "https:" + file_url;
+			} else if (file_url.indexOf("http://") == 0 || file_url.indexOf("https://") == 0) {
+				src = file_url;
+			} else {
+				src = vm.tabs[tabIndex].base_url + file_url;
+			}
 			images[i] = new Image();
 			images[i].src = src;
 		}

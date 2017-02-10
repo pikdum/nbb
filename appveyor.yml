@@ -33,7 +33,7 @@ test: off
 deploy:
 - provider: FTP
   protocol: sftp
-  host: kuudere.moe
+  host: chino.kuudere.moe
   username: pikdum
   password:
     secure: 8is1tNTxr7d7AFNggYy8OQ==

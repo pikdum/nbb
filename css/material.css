@@ -152,6 +152,9 @@ html,body {
 a, button, input {
 	-webkit-app-region: no-drag;
 }
+#swf {
+	-webkit-user-select: auto;
+}
 .loadingBar {
 	width: 100%;
 	position: absolute;

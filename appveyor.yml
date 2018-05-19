@@ -15,7 +15,7 @@ install:
 - ps: Install-Product node 8 x64
 - git reset --hard HEAD
 - npm install npm -g
-- npm install electron-builder@next
+- npm install electron-builder@6.7.7
 - npm install
 - npm prune
 

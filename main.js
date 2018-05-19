@@ -39,7 +39,7 @@ switch (process.platform) {
     break;
   case 'linux':
     pluginName = 'libpepflashplayer.so';
-    flashPath = "/usr/lib/pepperflashplugin-nonfree/";
+    flashPath = "/usr/lib/PepperFlash/";
     break;
 }
 

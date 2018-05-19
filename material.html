@@ -103,7 +103,7 @@
 					<div ng-repeat="entry in vm.tabs[vm.i].data">
 						<a ng-click="vm.setActive(vm.tabs[vm.i].data.indexOf(entry))" href="#">
 							<div ng-class="{'mdl-shadow--2dp': vm.tabs[vm.i].active == entry }" class="imgCropper preview" style="width: 100%;">
-								<img ng-src="{{ entry.preview_url ? entry.preview_url : vm.tabs[vm.i].base_url + entry.preview_file_url }}">
+								<img ng-src="{{ entry.preview_url ? entry.preview_url : entry.preview_file_url }}">
 							</div>
 						</a>
 					</div>
